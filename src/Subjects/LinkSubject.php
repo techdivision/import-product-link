@@ -22,11 +22,10 @@ namespace TechDivision\Import\Product\Link\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\AbstractSubject;
-use TechDivision\Import\Product\Link\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 
 /**
- * A SLSB that handles the process to import product variants.
+ * A SLSB that handles the process to import product links.
  *
  * @author    Tim Wagner <tw@appserver.io>
  * @copyright 2015 TechDivision GmbH <info@appserver.io>
@@ -65,7 +64,7 @@ class LinkSubject extends AbstractSubject
      *
      * @return void
      */
-    public function setProductProcessor(ProductMediaProcessorInterface $productProcessor)
+    public function setProductProcessor(ProductLinkProcessorInterface $productProcessor)
     {
         $this->productProcessor = $productProcessor;
     }

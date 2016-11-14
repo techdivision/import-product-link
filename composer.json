@@ -11,7 +11,7 @@
 	],
 	"autoload" : {
 		"psr-4" : {
-			"TechDivision\\Import\\Product\\Media\\" : [
+			"TechDivision\\Import\\Product\\Link\\" : [
 				"src/",
 				"tests/"
 			]
