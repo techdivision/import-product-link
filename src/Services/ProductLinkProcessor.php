@@ -38,6 +38,42 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      * @var \PDO
      */
     protected $connection;
+
+    /**
+     * The action with the product link CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAction
+     */
+    protected $productLinkAction;
+
+    /**
+     * The action with the product link attribute CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeAction
+     */
+    protected $productLinkAttributeAction;
+
+    /**
+     * The action with the product link attribute decimal CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalAction
+     */
+    protected $productLinkAttributeDecimalAction;
+
+    /**
+     * The action with the product link attribute integer CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction
+     */
+    protected $productLinkAttributeIntAction;
+
+    /**
+     * The action with the product link attribute varchar CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharAction
+     */
+    protected $productLinkAttributeVarcharAction;
+
     /**
      * Set's the passed connection.
      *
@@ -102,5 +138,175 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     public function rollBack()
     {
         return $this->connection->rollBack();
+    }
+
+    /**
+     * Set's the action with the product link CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAction $productLinkAction The action with the product link CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAction($productLinkAction)
+    {
+        $this->productLinkAction = $productLinkAction;
+    }
+
+    /**
+     * Return's the action with the product link CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkGalleryAction The action with the product link CRUD methods
+     */
+    public function getProductLinkAction()
+    {
+        return $this->productLinkAction;
+    }
+
+    /**
+     * Set's the action with the product link attribute CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeAction $productLinkAttributeAction The action with the product link attribute CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeAction($productLinkAttributeAction)
+    {
+        $this->productLinkAttributeAction = $productLinkAttributeAction;
+    }
+
+    /**
+     * Return's the action with the product link attribute CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeAction The action with the product link attribute CRUD methods
+     */
+    public function getProductLinkAttributeAction()
+    {
+        return $this->productLinkAttributeAction;
+    }
+
+    /**
+     * Set's the action with the product link attribute decimal CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalAction $productLinkAttributeDecimalAction The action with the product link attribute decimal CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeDecimalAction($productLinkAttributeDecimalAction)
+    {
+        $this->productLinkAttributeDecimalAction = $productLinkAttributeDecimalAction;
+    }
+
+    /**
+     * Return's the action with the product link attribute decimal CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalAction The action with the product link attribute decimal CRUD methods
+     */
+    public function getProductLinkAttributeDecimalAction()
+    {
+        return $this->productLinkAttributeDecimalAction;
+    }
+
+    /**
+     * Set's the action with the product link attribute integer CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction $productLinkAttributeIntAction The action with the product link attribute integer CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeIntAction($productLinkAttributeIntAction)
+    {
+        $this->productLinkAttributeIntAction = $productLinkAttributeIntAction;
+    }
+
+    /**
+     * Return's the action with the product link attribute integer CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction The action with the product link attribute integer CRUD methods
+     */
+    public function getProductLinkAttributeIntAction()
+    {
+        return $this->productLinkAttributeIntAction;
+    }
+
+    /**
+     * Set's the action with the product link attribute varchar CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharAction $productLinkAttributeVarcharAction The action with the product link attribute varchar CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeVarcharAction($productLinkAttributeVarcharAction)
+    {
+        $this->productLinkAttributeVarcharAction = $productLinkAttributeVarcharAction;
+    }
+
+    /**
+     * Return's the action with the product link attribute varchar CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharAction The action with the product link attribute varchar CRUD methods
+     */
+    public function getProductLinkAttributeVarcharAction()
+    {
+        return $this->productLinkAttributeVarcharAction;
+    }
+
+    /**
+     * Persist's the passed product link data and return's the ID.
+     *
+     * @param array $productLink The product link data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLink($productLink)
+    {
+        return $this->getProductLinkAction()->persist($productLink);
+    }
+
+    /**
+     * Persist's the passed product link attribute data and return's the ID.
+     *
+     * @param array $productLinkAttribute The product link attribute data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLinkAttribute($productLinkAttribute)
+    {
+        return $this->getProductLinkAttributeAction()->persist($productLinkAttribute);
+    }
+
+    /**
+     * Persist's the passed product link attribute decimal data.
+     *
+     * @param array $productLinkAttributeDecimal The product link attribute decimal data to persist
+     *
+     * @return void
+     */
+    public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
+    {
+        $this->getProductLinkAttributeDecimalAction()->persist($productLinkAttributeDecimal);
+    }
+
+    /**
+     * Persist's the passed product link attribute integer data.
+     *
+     * @param array $productLinkAttributeInt The product link attribute integer data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLinkAttributeInt($productLinkAttributeInt)
+    {
+        $this->getProductLinkAttributeIntAction()->persist($productLinkAttributeInt);
+    }
+
+    /**
+     * Persist's the passed product link attribute varchar data.
+     *
+     * @param array $productLinkAttributeVarchar The product link attribute varchar data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
+    {
+        $this->getProductLinkAttributeVarcharAction()->persist($productLinkAttributeVarchar);
     }
 }

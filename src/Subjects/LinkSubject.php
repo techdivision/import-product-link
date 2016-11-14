@@ -146,4 +146,64 @@ class LinkSubject extends AbstractSubject
         // throw an exception, if not
         throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
     }
+
+    /**
+     * Persist's the passed product link data and return's the ID.
+     *
+     * @param array $productLink The product link data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLink($productLink)
+    {
+        return $this->getProductProcessor()->persistProductLink($productLink);
+    }
+
+    /**
+     * Persist's the passed product link attribute data and return's the ID.
+     *
+     * @param array $productLinkAttribute The product link attribute data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLinkAttribute($productLinkAttribute)
+    {
+        return $this->getProductProcessor()->persistProductLinkAttribute($productLinkAttribute);
+    }
+
+    /**
+     * Persist's the passed product link attribute decimal data.
+     *
+     * @param array $productLinkAttributeDecimal The product link attribute decimal data to persist
+     *
+     * @return void
+     */
+    public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
+    {
+        $this->getProductProcessor()->persistProductLinkAttributeDecimal($productLinkAttributeDecimal);
+    }
+
+    /**
+     * Persist's the passed product link attribute integer data.
+     *
+     * @param array $productLinkAttributeInt The product link attribute integer data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLinkAttributeInt($productLinkAttributeInt)
+    {
+        $this->getProductProcessor()->persistProductLinkAttributeInt($productLinkAttributeInt);
+    }
+
+    /**
+     * Persist's the passed product link attribute varchar data.
+     *
+     * @param array $productLinkAttributeVarchar The product link attribute varchar data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
+    {
+        $this->getProductProcessor()->persistProductLinkAttributeVarchar($productLinkAttributeVarchar);
+    }
 }
