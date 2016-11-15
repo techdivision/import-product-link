@@ -107,6 +107,11 @@ class ProductLinkProcessorFactory
         // initialize the product link processor
         $productLinkProcessor = new ProductLinkProcessor();
         $productLinkProcessor->setConnection($connection);
+        $productLinkProcessor->setProductLinkAction($productLinkAction);
+        $productLinkProcessor->setProductLinkAttributeAction($productLinkAttributeAction);
+        $productLinkProcessor->setProductLinkAttributeIntAction($productLinkAttributeIntAction);
+        $productLinkProcessor->setProductLinkAttributeDecimalAction($productLinkAttributeDecimalAction);
+        $productLinkProcessor->setProductLinkAttributeVarcharAction($productLinkAttributeVarcharAction);
 
         // return the instance
         return $productLinkProcessor;

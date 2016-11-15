@@ -22,6 +22,7 @@ namespace TechDivision\Import\Product\Link\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\AbstractSubject;
+use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 
 /**
@@ -44,11 +45,11 @@ class LinkSubject extends AbstractSubject
     protected $productProcessor;
 
     /**
-     * The available stores.
+     * The available link types.
      *
      * @var array
      */
-    protected $stores = array();
+    protected $linkTypes = array();
 
     /**
      * The mapping for the SKUs to the created entity IDs.
@@ -97,8 +98,8 @@ class LinkSubject extends AbstractSubject
         // load the EAV attributes we've prepared initially
         $this->eavAttributes = $status['globalData'][RegistryKeys::EAV_ATTRIBUTES];
 
-        // load the stores we've initialized before
-        $this->stores = $status['globalData'][RegistryKeys::STORES];
+        // load the link types we've initialized before
+        $this->linkTypes = $status['globalData'][RegistryKeys::LINK_TYPES];
 
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status['skuEntityIdMapping'];
@@ -128,23 +129,23 @@ class LinkSubject extends AbstractSubject
     }
 
     /**
-     * Return's the store for the passed store code.
+     * Return the link type ID for the passed link type code.
      *
-     * @param string $storeCode The store code to return the store for
+     * @param string $linkTypeCode The link type code to return the link type ID for
      *
-     * @return array The requested store
-     * @throws \Exception Is thrown, if the requested store is not available
+     * @return integer The mapped link type ID
+     * @throws \Exception Is thrown if the link type code is not mapped yet
      */
-    public function getStoreByStoreCode($storeCode)
+    public function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
     {
 
-        // query whether or not the store with the passed store code exists
-        if (isset($this->stores[$storeCode])) {
-            return $this->stores[$storeCode];
+        // query weather or not the link type code has been mapped
+        if (isset($this->linkTypes[$linkTypeCode])) {
+            return $this->linkTypes[$linkTypeCode][MemberNames::LINK_TYPE_ID];
         }
 
-        // throw an exception, if not
-        throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
+        // throw an exception if the link type code has not been mapped yet
+        throw new \Exception(sprintf('Found not mapped link type code %s', $linkTypeCode));
     }
 
     /**

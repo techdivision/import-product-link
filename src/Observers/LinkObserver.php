@@ -21,6 +21,7 @@
 namespace TechDivision\Import\Product\Link\Observers;
 
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 
 /**
  * A SLSB that handles the process to import product links.
@@ -44,6 +45,23 @@ class LinkObserver extends AbstractProductImportObserver
         // load the header information
         $headers = $this->getHeaders();
 
+        // extract the parent/child ID as well as the link type code from the row
+        $parentSku = $row[$headers[ColumnKeys::LINK_PARENT_SKU]];
+        $childSku = $row[$headers[ColumnKeys::LINK_CHILD_SKU]];
+        $linkTypeCode = $row[$headers[ColumnKeys::LINK_TYPE_CODE]];
+
+        // load parent/child IDs and link type ID
+        $parentId = $this->mapSkuToEntityId($parentSku);
+        $childId = $this->mapSkuToEntityId($childSku);
+        $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
+
+        $productLink = array($parentId, $childId, $linkTypeId);
+
+        $this->getSystemLogger()->info(print_r($productLink, true));
+
+        // persist the product link
+        $this->persistProductLink($productLink);
+
         // returns the row
         return $row;
     }
@@ -58,5 +76,31 @@ class LinkObserver extends AbstractProductImportObserver
     public function persistProductLink($productLink)
     {
         return $this->getSubject()->persistProductLink($productLink);
+    }
+
+    /**
+     * Return the entity ID for the passed SKU.
+     *
+     * @param string $sku The SKU to return the entity ID for
+     *
+     * @return integer The mapped entity ID
+     * @throws \Exception Is thrown if the SKU is not mapped yet
+     */
+    public function mapSkuToEntityId($sku)
+    {
+        return $this->getSubject()->mapSkuToEntityId($sku);
+    }
+
+    /**
+     * Return the link type ID for the passed link type code.
+     *
+     * @param string $linkTypeCode The link type code to return the link type ID for
+     *
+     * @return integer The mapped link type ID
+     * @throws \Exception Is thrown if the link type code is not mapped yet
+     */
+    public function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
+    {
+        return $this->getSubject()->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
     }
 }
