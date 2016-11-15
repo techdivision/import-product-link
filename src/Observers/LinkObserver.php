@@ -55,12 +55,8 @@ class LinkObserver extends AbstractProductImportObserver
         $childId = $this->mapSkuToEntityId($childSku);
         $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
 
-        $productLink = array($parentId, $childId, $linkTypeId);
-
-        $this->getSystemLogger()->info(print_r($productLink, true));
-
         // persist the product link
-        $this->persistProductLink($productLink);
+        $this->persistProductLink(array($parentId, $childId, $linkTypeId));
 
         // returns the row
         return $row;
