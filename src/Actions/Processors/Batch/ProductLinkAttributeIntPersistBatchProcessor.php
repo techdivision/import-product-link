@@ -50,6 +50,7 @@ class ProductLinkAttributeIntPersistBatchProcessor extends AbstractPersistBatchP
      */
     protected function getStatement()
     {
-        return SqlStatements::CREATE_PRODUCT_LINK_ATTRIBUTE_INT;
+        $utilityClassName = $this->getUtilityClassName();
+        return $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_INT;
     }
 }

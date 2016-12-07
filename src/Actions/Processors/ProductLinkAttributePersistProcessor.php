@@ -20,6 +20,8 @@
 
 namespace TechDivision\Import\Product\Link\Actions\Processors;
 
+use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
+
 /**
  * The product link persist attribute processor implementation.
  *
@@ -29,7 +31,7 @@ namespace TechDivision\Import\Product\Link\Actions\Processors;
  * @link      https://github.com/wagnert/csv-import
  * @link      http://www.appserver.io
  */
-class ProductLinkAttributePersistProcessor extends AbstractProductLinkPersistProcessor
+class ProductLinkAttributePersistProcessor extends AbstractPersistProcessor
 {
 
     /**

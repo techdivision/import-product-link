@@ -21,7 +21,7 @@
 namespace TechDivision\Import\Product\Link\Services;
 
 use TechDivision\Import\ConfigurationInterface;
-use TechDivision\Import\Services\AbstractProcessorFactory;
+use TechDivision\Import\Product\Services\AbstractProductProcessorFactory;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAction;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeAction;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction;
@@ -32,6 +32,7 @@ use TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributePers
 use TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeIntPersistProcessor;
 use TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeDecimalPersistProcessor;
 use TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeVarcharPersistProcessor;
+use TechDivision\Import\Configuration\SubjectInterface;
 
 /**
  * A SLSB providing methods to load product link data using a PDO connection.
@@ -42,7 +43,7 @@ use TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeVarc
  * @link      https://github.com/wagnert/csv-import
  * @link      http://www.appserver.io
  */
-class ProductLinkProcessorFactory extends AbstractProcessorFactory
+class ProductLinkProcessorFactory extends AbstractProductProcessorFactory
 {
 
     /**
@@ -63,17 +64,15 @@ class ProductLinkProcessorFactory extends AbstractProcessorFactory
      *
      * @return \TechDivision\Import\Product\Link\Services\ProducLinkProcessor The processor instance
      */
-    public function factory(\PDO $connection, ConfigurationInterface $configuration)
+    public static function factory(\PDO $connection, SubjectInterface $configuration)
     {
 
-        // extract Magento edition/version
-        $magentoEdition = $configuration->getMagentoEdition();
-        $magentoVersion = $configuration->getMagentoVersion();
+        // load the utility class name
+        $utilityClassName = $configuration->getUtilityClassName();
 
         // initialize the action that provides product link CRUD functionality
         $productLinkPersistProcessor = new ProductLinkPersistProcessor();
-        $productLinkPersistProcessor->setMagentoEdition($magentoEdition);
-        $productLinkPersistProcessor->setMagentoVersion($magentoVersion);
+        $productLinkPersistProcessor->setUtilityClassName($utilityClassName);
         $productLinkPersistProcessor->setConnection($connection);
         $productLinkPersistProcessor->init();
         $productLinkAction = new ProductLinkAction();
@@ -81,8 +80,7 @@ class ProductLinkProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product link attribute CRUD functionality
         $productLinkAttributePersistProcessor = new ProductLinkAttributePersistProcessor();
-        $productLinkAttributePersistProcessor->setMagentoEdition($magentoEdition);
-        $productLinkAttributePersistProcessor->setMagentoVersion($magentoVersion);
+        $productLinkAttributePersistProcessor->setUtilityClassName($utilityClassName);
         $productLinkAttributePersistProcessor->setConnection($connection);
         $productLinkAttributePersistProcessor->init();
         $productLinkAttributeAction = new ProductLinkAttributeAction();
@@ -90,8 +88,7 @@ class ProductLinkProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product link attribute decimal CRUD functionality
         $productLinkAttributeDecimalPersistProcessor = new ProductLinkAttributeDecimalPersistProcessor();
-        $productLinkAttributeDecimalPersistProcessor->setMagentoEdition($magentoEdition);
-        $productLinkAttributeDecimalPersistProcessor->setMagentoVersion($magentoVersion);
+        $productLinkAttributeDecimalPersistProcessor->setUtilityClassName($utilityClassName);
         $productLinkAttributeDecimalPersistProcessor->setConnection($connection);
         $productLinkAttributeDecimalPersistProcessor->init();
         $productLinkAttributeDecimalAction = new ProductLinkAttributeDecimalAction();
@@ -99,8 +96,7 @@ class ProductLinkProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product link attribute integer CRUD functionality
         $productLinkAttributeIntPersistProcessor = new ProductLinkAttributeIntPersistProcessor();
-        $productLinkAttributeIntPersistProcessor->setMagentoEdition($magentoEdition);
-        $productLinkAttributeIntPersistProcessor->setMagentoVersion($magentoVersion);
+        $productLinkAttributeIntPersistProcessor->setUtilityClassName($utilityClassName);
         $productLinkAttributeIntPersistProcessor->setConnection($connection);
         $productLinkAttributeIntPersistProcessor->init();
         $productLinkAttributeIntAction = new ProductLinkAttributeIntAction();
@@ -108,8 +104,7 @@ class ProductLinkProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product link attribute varchar CRUD functionality
         $productLinkAttributeVarcharPersistProcessor = new ProductLinkAttributeVarcharPersistProcessor();
-        $productLinkAttributeVarcharPersistProcessor->setMagentoEdition($magentoEdition);
-        $productLinkAttributeVarcharPersistProcessor->setMagentoVersion($magentoVersion);
+        $productLinkAttributeVarcharPersistProcessor->setUtilityClassName($utilityClassName);
         $productLinkAttributeVarcharPersistProcessor->setConnection($connection);
         $productLinkAttributeVarcharPersistProcessor->init();
         $productLinkAttributeVarcharAction = new ProductLinkAttributeVarcharAction();

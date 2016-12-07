@@ -50,6 +50,7 @@ class ProductLinkAttributeDecimalPersistBatchProcessor extends AbstractPersistBa
      */
     protected function getStatement()
     {
-        return SqlStatements::CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL;
+        $utilityClassName = $this->getUtilityClassName();
+        return $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL;
     }
 }
