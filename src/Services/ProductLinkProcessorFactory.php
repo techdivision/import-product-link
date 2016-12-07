@@ -21,6 +21,7 @@
 namespace TechDivision\Import\Product\Link\Services;
 
 use TechDivision\Import\ConfigurationInterface;
+use TechDivision\Import\Services\AbstractProcessorFactory;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAction;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeAction;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction;
@@ -41,8 +42,18 @@ use TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeVarc
  * @link      https://github.com/wagnert/csv-import
  * @link      http://www.appserver.io
  */
-class ProductLinkProcessorFactory
+class ProductLinkProcessorFactory extends AbstractProcessorFactory
 {
+
+    /**
+     * Return's the processor class name.
+     *
+     * @return string The processor class name
+     */
+    protected static function getProcessorType()
+    {
+        return 'TechDivision\Import\Product\Link\Services\ProductLinkProcessor';
+    }
 
     /**
      * Factory method to create a new product link processor instance.
@@ -105,7 +116,8 @@ class ProductLinkProcessorFactory
         $productLinkAttributeVarcharAction->setPersistProcessor($productLinkAttributeVarcharPersistProcessor);
 
         // initialize the product link processor
-        $productLinkProcessor = new ProductLinkProcessor();
+        $processorType = ProductProcessorFactory::getProcessorType();
+        $productLinkProcessor = new $processorType();
         $productLinkProcessor->setConnection($connection);
         $productLinkProcessor->setProductLinkAction($productLinkAction);
         $productLinkProcessor->setProductLinkAttributeAction($productLinkAttributeAction);
