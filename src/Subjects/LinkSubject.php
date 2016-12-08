@@ -96,13 +96,13 @@ class LinkSubject extends AbstractSubject
         $status = $registryProcessor->getAttribute($this->serial);
 
         // load the EAV attributes we've prepared initially
-        $this->eavAttributes = $status['globalData'][RegistryKeys::EAV_ATTRIBUTES];
+        $this->eavAttributes = $status[[RegistryKeys::GLOBAL_DATA][RegistryKeys::EAV_ATTRIBUTES];
 
         // load the link types we've initialized before
-        $this->linkTypes = $status['globalData'][RegistryKeys::LINK_TYPES];
+        $this->linkTypes = $status[[RegistryKeys::GLOBAL_DATA][RegistryKeys::LINK_TYPES];
 
         // load the attribute set we've prepared intially
-        $this->skuEntityIdMapping = $status['skuEntityIdMapping'];
+        $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
 
         // prepare the callbacks
         parent::setUp();
