@@ -1,3 +1,15 @@
+# Version 1.0.0-alpha3
+
+## Bugfixes
+
+* None
+
+## Features
+
+* LinkSubject now extends AbstractProductSubject
+* Add Robo.li composer dependeny + task configuration
+* ProductLinkProcessorInterface now extends ProductProcessorInterface
+
 # Version 1.0.0-alpha2
 
 ## Bugfixes
