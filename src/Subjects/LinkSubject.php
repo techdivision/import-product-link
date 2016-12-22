@@ -21,7 +21,7 @@
 namespace TechDivision\Import\Product\Link\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Subjects\AbstractSubject;
+use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 
@@ -34,15 +34,8 @@ use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class LinkSubject extends AbstractSubject
+class LinkSubject extends AbstractProductSubject
 {
-
-    /**
-     * The processor to write the necessary product media data.
-     *
-     * @var \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface
-     */
-    protected $productProcessor;
 
     /**
      * The available link types.
@@ -59,28 +52,6 @@ class LinkSubject extends AbstractSubject
     protected $skuEntityIdMapping = array();
 
     /**
-     * Set's the product link processor instance.
-     *
-     * @param \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface $productProcessor The product link processor instance
-     *
-     * @return void
-     */
-    public function setProductProcessor(ProductLinkProcessorInterface $productProcessor)
-    {
-        $this->productProcessor = $productProcessor;
-    }
-
-    /**
-     * Return's the product link processor instance.
-     *
-     * @return \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface The product link processor instance
-     */
-    public function getProductProcessor()
-    {
-        return $this->productProcessor;
-    }
-
-    /**
      * Intializes the previously loaded global data for exactly one variants.
      *
      * @return void
@@ -89,23 +60,17 @@ class LinkSubject extends AbstractSubject
     public function setUp()
     {
 
+        // invoke the parent method
+        parent::setUp();
+
         // load the entity manager and the registry processor
         $registryProcessor = $this->getRegistryProcessor();
 
         // load the status of the actual import process
-        $status = $registryProcessor->getAttribute($this->serial);
-
-        // load the EAV attributes we've prepared initially
-        $this->eavAttributes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::EAV_ATTRIBUTES];
-
-        // load the link types we've initialized before
-        $this->linkTypes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::LINK_TYPES];
+        $status = $registryProcessor->getAttribute($this->getSerial());
 
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
-
-        // prepare the callbacks
-        parent::setUp();
     }
 
     /**
