@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeVarcharPersistProcessor
+ * TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeIntCreateProcessor
  *
  * NOTICE OF LICENSE
  *
@@ -20,10 +20,10 @@
 
 namespace TechDivision\Import\Product\Link\Actions\Processors;
 
-use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
+use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
 
 /**
- * The product link attribute varchar persist processor implementation.
+ * The product link attribute integer create processor implementation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,7 +31,7 @@ use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ProductLinkAttributeVarcharPersistProcessor extends AbstractPersistProcessor
+class ProductLinkAttributeIntCreateProcessor extends AbstractCreateProcessor
 {
 
     /**
@@ -48,7 +48,7 @@ class ProductLinkAttributeVarcharPersistProcessor extends AbstractPersistProcess
 
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR => $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR
+            $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_INT => $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_INT
         );
     }
 }

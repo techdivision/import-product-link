@@ -259,7 +259,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLink($productLink)
     {
-        return $this->getProductLinkAction()->persist($productLink);
+        return $this->getProductLinkAction()->create($productLink);
     }
 
     /**
@@ -271,7 +271,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttribute($productLinkAttribute)
     {
-        return $this->getProductLinkAttributeAction()->persist($productLinkAttribute);
+        return $this->getProductLinkAttributeAction()->create($productLinkAttribute);
     }
 
     /**
@@ -283,7 +283,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
     {
-        $this->getProductLinkAttributeDecimalAction()->persist($productLinkAttributeDecimal);
+        $this->getProductLinkAttributeDecimalAction()->create($productLinkAttributeDecimal);
     }
 
     /**
@@ -295,7 +295,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttributeInt($productLinkAttributeInt)
     {
-        $this->getProductLinkAttributeIntAction()->persist($productLinkAttributeInt);
+        $this->getProductLinkAttributeIntAction()->create($productLinkAttributeInt);
     }
 
     /**
@@ -307,6 +307,6 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
     {
-        $this->getProductLinkAttributeVarcharAction()->persist($productLinkAttributeVarchar);
+        $this->getProductLinkAttributeVarcharAction()->create($productLinkAttributeVarchar);
     }
 }
