@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributePersistProcessor
+ * TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeCreateProcessor
  *
  * NOTICE OF LICENSE
  *
@@ -20,7 +20,7 @@
 
 namespace TechDivision\Import\Product\Link\Actions\Processors;
 
-use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
+use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
 
 /**
  * The product link persist attribute processor implementation.
@@ -31,7 +31,7 @@ use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ProductLinkAttributePersistProcessor extends AbstractPersistProcessor
+class ProductLinkAttributeCreateProcessor extends AbstractCreateProcessor
 {
 
     /**
