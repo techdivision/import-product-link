@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeDecimalCreateProcessor
+ * TechDivision\Import\Product\Link\Actions\Processors\ProductLinkUpdateProcessor
  *
  * NOTICE OF LICENSE
  *
@@ -20,10 +20,11 @@
 
 namespace TechDivision\Import\Product\Link\Actions\Processors;
 
-use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
+use TechDivision\Import\Actions\Processors\AbstractUpdateProcessor;
+use TechDivision\Import\Product\Link\Utils\MemberNames;
 
 /**
- * The product link attribute decimal create processor implementation.
+ * The product link update processor implementation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,7 +32,7 @@ use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ProductLinkAttributeDecimalCreateProcessor extends AbstractCreateProcessor
+class ProductLinkUpdateProcessor extends AbstractUpdateProcessor
 {
 
     /**
@@ -48,7 +49,21 @@ class ProductLinkAttributeDecimalCreateProcessor extends AbstractCreateProcessor
 
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL => $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL
+            $utilityClassName::UPDATE_PRODUCT_LINK => $utilityClassName::UPDATE_PRODUCT_LINK
         );
+    }
+
+    /**
+     * Persist's the passed row.
+     *
+     * @param array       $row  The row to persist
+     * @param string|null $name The name of the prepared statement that has to be executed
+     *
+     * @return string The last inserted ID
+     */
+    public function execute($row, $name = null)
+    {
+        parent::execute($row, $name);
+        return $row[MemberNames::LINK_ID];
     }
 }

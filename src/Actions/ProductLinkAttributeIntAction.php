@@ -23,7 +23,7 @@ namespace TechDivision\Import\Product\Link\Actions;
 use TechDivision\Import\Actions\AbstractAction;
 
 /**
- * A SLSB providing repository functionality for product link attribute integer CRUD actions.
+ * An action implementation that provides CRUD functionality for product link integer attributes.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>

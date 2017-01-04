@@ -35,6 +35,20 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
 {
 
     /**
+     * Return's the repository to load product links.
+     *
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkRepository The repository instance
+     */
+    public function getProductLinkRepository();
+
+    /**
+     * Return's the repository to load product link attribute integer attributes.
+     *
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository The repository instance
+     */
+    public function getProductLinkAttributeIntRepository();
+
+    /**
      * Return's the action with the product link CRUD methods.
      *
      * @return \TechDivision\Import\Product\Link\Actions\ProductLinkGalleryAction The action with the product link CRUD methods
@@ -68,6 +82,27 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
      * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharAction The action with the product link attribute varchar CRUD methods
      */
     public function getProductLinkAttributeVarcharAction();
+
+    /**
+     * Load's the link with the passed product/linked product/link type ID.
+     *
+     * @param integer $productId       The product ID of the link to load
+     * @param integer $linkedProductId The linked product ID of the link to load
+     * @param integer $linkTypeId      The link type ID of the product to load
+     *
+     * @return array The link
+     */
+    public function loadProductLink($productId, $linkedProductId, $linkTypeId);
+
+    /**
+     * Return's the product link attribute integer value with the passed product link attribute/link ID.
+     *
+     * @param integer $productLinkAttributeId The product link attribute ID of the attributes
+     * @param integer $linkId                 The link ID of the attribute
+     *
+     * @return array The product link attribute integer value
+     */
+    public function loadProductLinkAttributeInt($productLinkAttributeId, $linkId);
 
     /**
      * Persist's the passed product link data and return's the ID.

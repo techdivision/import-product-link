@@ -20,11 +20,12 @@
 
 namespace TechDivision\Import\Product\Link\Observers;
 
-use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
+use TechDivision\Import\Product\Link\Utils\MemberNames;
+use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
- * A SLSB that handles the process to import product links.
+ * Oberserver that provides functionality for the product link replace operation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -46,24 +47,79 @@ class LinkObserver extends AbstractProductImportObserver
     public function handle(array $row)
     {
 
-        // load the header information
-        $headers = $this->getHeaders();
+        // initialize the row
+        $this->setRow($row);
+
+        // process the functionality and return the row
+        $this->process();
+
+        // return the processed row
+        return $this->getRow();
+    }
+
+    /**
+     * Process the observer's business logic.
+     *
+     * @return array The processed row
+     */
+    protected function process()
+    {
+        // prepare and initialize product link entity
+        $productLink = $this->initializeProductLink($this->prepareAttributes());
+
+        // persist the product link entity and store the link ID
+        $this->setLastLinkId($this->persistProductLink($productLink));
+    }
+
+    /**
+     * Prepare the attributes of the entity that has to be persisted.
+     *
+     * @return array The prepared attributes
+     */
+    protected function prepareAttributes()
+    {
 
         // extract the parent/child ID as well as the link type code from the row
-        $parentSku = $row[$headers[ColumnKeys::LINK_PARENT_SKU]];
-        $childSku = $row[$headers[ColumnKeys::LINK_CHILD_SKU]];
-        $linkTypeCode = $row[$headers[ColumnKeys::LINK_TYPE_CODE]];
+        $parentSku = $this->getValue(ColumnKeys::LINK_PARENT_SKU);
+        $childSku = $this->getValue(ColumnKeys::LINK_CHILD_SKU);
+        $linkTypeCode = $this->getValue(ColumnKeys::LINK_TYPE_CODE);
 
         // load parent/child IDs and link type ID
-        $parentId = $this->mapSkuToEntityId($parentSku);
-        $childId = $this->mapSkuToEntityId($childSku);
+        $parentId = $this->mapSku($parentSku);
+        $childId = $this->mapSku($childSku);
         $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
 
-        // persist the product link
-        $this->persistProductLink(array($parentId, $childId, $linkTypeId));
+        return $this->initializeEntity(
+            array(
+                MemberNames::PRODUCT_ID        => $parentId,
+                MemberNames::LINKED_PRODUCT_ID => $childId,
+                MemberNames::LINK_TYPE_ID      => $linkTypeId
+            )
+        );
+    }
 
-        // returns the row
-        return $row;
+    /**
+     * Initialize the product link with the passed attributes and returns an instance.
+     *
+     * @param array $attr The product link attributes
+     *
+     * @return array The initialized product link
+     */
+    protected function initializeProductLink(array $attr)
+    {
+        return $attr;
+    }
+
+    /**
+     * Temporary persist the last link ID.
+     *
+     * @param integer $lastLinkId The last link ID
+     *
+     * @return void
+     */
+    protected function setLastLinkId($lastLinkId)
+    {
+        $this->getSubject()->setLastLinkId($lastLinkId);
     }
 
     /**
@@ -73,7 +129,7 @@ class LinkObserver extends AbstractProductImportObserver
      *
      * @return string The ID of the persisted entity
      */
-    public function persistProductLink($productLink)
+    protected function persistProductLink($productLink)
     {
         return $this->getSubject()->persistProductLink($productLink);
     }
@@ -86,7 +142,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @return integer The mapped entity ID
      * @throws \Exception Is thrown if the SKU is not mapped yet
      */
-    public function mapSkuToEntityId($sku)
+    protected function mapSku($sku)
     {
         return $this->getSubject()->mapSkuToEntityId($sku);
     }
@@ -99,7 +155,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @return integer The mapped link type ID
      * @throws \Exception Is thrown if the link type code is not mapped yet
      */
-    public function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
+    protected function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
     {
         return $this->getSubject()->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
     }

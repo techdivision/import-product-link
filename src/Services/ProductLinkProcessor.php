@@ -40,6 +40,20 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     protected $connection;
 
     /**
+     * The repository to load product links.
+     *
+     * @var \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepository
+     */
+    protected $productLinkRepository;
+
+    /**
+     * The repository to load product link attribute integer attributes.
+     *
+     * @var \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepository
+     */
+    protected $productLinkAttributeIntRepository;
+
+    /**
      * The action with the product link CRUD methods.
      *
      * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAction
@@ -138,6 +152,50 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     public function rollBack()
     {
         return $this->connection->rollBack();
+    }
+
+    /**
+     * Set's the repository to load product links.
+     *
+     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkRepository $productLinkRepository The repository instance
+     *
+     * @return void
+     */
+    public function setProductLinkRepository($productLinkRepository)
+    {
+        $this->productLinkRepository = $productLinkRepository;
+    }
+
+    /**
+     * Return's the repository to load product links.
+     *
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkRepository The repository instance
+     */
+    public function getProductLinkRepository()
+    {
+        return $this->productLinkRepository;
+    }
+
+    /**
+     * Set's the repository to load product link attribute integer attributes.
+     *
+     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository $productLinkAttributeIntRepository The repository instance
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeIntRepository($productLinkAttributeIntRepository)
+    {
+        $this->productLinkAttributeIntRepository = $productLinkAttributeIntRepository;
+    }
+
+    /**
+     * Return's the repository to load product link attribute integer attributes.
+     *
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository The repository instance
+     */
+    public function getProductLinkAttributeIntRepository()
+    {
+        return $this->productLinkAttributeIntRepository;
     }
 
     /**
@@ -251,6 +309,33 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     }
 
     /**
+     * Load's the link with the passed product/linked product/link type ID.
+     *
+     * @param integer $productId       The product ID of the link to load
+     * @param integer $linkedProductId The linked product ID of the link to load
+     * @param integer $linkTypeId      The link type ID of the product to load
+     *
+     * @return array The link
+     */
+    public function loadProductLink($productId, $linkedProductId, $linkTypeId)
+    {
+        return $this->getProductLinkRepository()->findOneByProductIdAndLinkedProductIdAndLinkTypeId($productId, $linkedProductId, $linkTypeId);
+    }
+
+    /**
+     * Return's the product link attribute integer value with the passed product link attribute/link ID.
+     *
+     * @param integer $productLinkAttributeId The product link attribute ID of the attributes
+     * @param integer $linkId                 The link ID of the attribute
+     *
+     * @return array The product link attribute integer value
+     */
+    public function loadProductLinkAttributeInt($productLinkAttributeId, $linkId)
+    {
+        return $this->getProductLinkAttributeIntRepository()->findOneByProductLinkAttributeIdAndLinkId($productLinkAttributeId, $linkId);
+    }
+
+    /**
      * Persist's the passed product link data and return's the ID.
      *
      * @param array $productLink The product link data to persist
@@ -259,7 +344,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLink($productLink)
     {
-        return $this->getProductLinkAction()->create($productLink);
+        return $this->getProductLinkAction()->persist($productLink);
     }
 
     /**
@@ -271,7 +356,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttribute($productLinkAttribute)
     {
-        return $this->getProductLinkAttributeAction()->create($productLinkAttribute);
+        return $this->getProductLinkAttributeAction()->persist($productLinkAttribute);
     }
 
     /**
@@ -283,7 +368,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
     {
-        $this->getProductLinkAttributeDecimalAction()->create($productLinkAttributeDecimal);
+        $this->getProductLinkAttributeDecimalAction()->persist($productLinkAttributeDecimal);
     }
 
     /**
@@ -295,7 +380,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttributeInt($productLinkAttributeInt)
     {
-        $this->getProductLinkAttributeIntAction()->create($productLinkAttributeInt);
+        $this->getProductLinkAttributeIntAction()->persist($productLinkAttributeInt);
     }
 
     /**
@@ -307,6 +392,6 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      */
     public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
     {
-        $this->getProductLinkAttributeVarcharAction()->create($productLinkAttributeVarchar);
+        $this->getProductLinkAttributeVarcharAction()->persist($productLinkAttributeVarchar);
     }
 }
