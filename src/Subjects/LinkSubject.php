@@ -21,12 +21,11 @@
 namespace TechDivision\Import\Product\Link\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
-use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
+use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 
 /**
- * A SLSB that handles the process to import product links.
+ * A subject implementation the process to import product links.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -38,11 +37,25 @@ class LinkSubject extends AbstractProductSubject
 {
 
     /**
+     * The temporary persisted last link ID.
+     *
+     * @var integer
+     */
+    protected $lastLinkId;
+
+    /**
      * The available link types.
      *
      * @var array
      */
     protected $linkTypes = array();
+
+    /**
+     * The available link attributes.
+     *
+     * @var array
+     */
+    protected $linkAttributes = array();
 
     /**
      * The mapping for the SKUs to the created entity IDs.
@@ -71,6 +84,32 @@ class LinkSubject extends AbstractProductSubject
 
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
+
+        // load the link types/attributes we've initialized before
+        $this->linkTypes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::LINK_TYPES];
+        $this->linkAttributes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::LINK_ATTRIBUTES];
+    }
+
+    /**
+     * Temporary persist the last link ID.
+     *
+     * @param integer $lastLinkId The last link ID
+     *
+     * @return void
+     */
+    public function setLastLinkId($lastLinkId)
+    {
+        $this->lastLinkId = $lastLinkId;
+    }
+
+    /**
+     * Load the temporary persisted the last link ID.
+     *
+     * @return integer The last link ID
+     */
+    public function getLastLinkId()
+    {
+        return $this->lastLinkId;
     }
 
     /**
@@ -94,7 +133,7 @@ class LinkSubject extends AbstractProductSubject
     }
 
     /**
-     * Return the link type ID for the passed link type code.
+     * Return's the link type ID for the passed link type code.
      *
      * @param string $linkTypeCode The link type code to return the link type ID for
      *
@@ -114,6 +153,55 @@ class LinkSubject extends AbstractProductSubject
     }
 
     /**
+     * Return's the link attribute for the passed link type ID and attribute code.
+     *
+     * @param integer $linkTypeId    The link type
+     * @param string  $attributeCode The attribute code
+     *
+     * @return array The link attribute
+     */
+    public function getProductLinkAttribute($linkTypeId, $attributeCode)
+    {
+
+        // try to load the link attribute with the passed link type ID and attribute code
+        foreach ($this->linkAttributes as $linkAttribute) {
+            if ($linkAttribute[MemberNames::LINK_TYPE_ID] === $linkTypeId &&
+                $linkAttribute[MemberNames::PRODUCT_LINK_ATTRIBUTE_CODE] === $attributeCode
+            ) {
+                // return the matching link attribute
+                return $linkAttribute;
+            }
+        }
+    }
+
+    /**
+     * Load's the link with the passed product/linked product/link type ID.
+     *
+     * @param integer $productId       The product ID of the link to load
+     * @param integer $linkedProductId The linked product ID of the link to load
+     * @param integer $linkTypeId      The link type ID of the product to load
+     *
+     * @return array The link
+     */
+    public function loadProductLink($productId, $linkedProductId, $linkTypeId)
+    {
+        return $this->getProductProcessor()->loadProductLink($productId, $linkedProductId, $linkTypeId);
+    }
+
+    /**
+     * Return's the product link attribute integer value with the passed product link attribute/link ID.
+     *
+     * @param integer $productLinkAttributeId The product link attribute ID of the attributes
+     * @param integer $linkId                 The link ID of the attribute
+     *
+     * @return array The product link attribute integer value
+     */
+    public function loadProductLinkAttributeInt($productLinkAttributeId, $linkId)
+    {
+        return $this->getProductProcessor()->loadProductLinkAttributeInt($productLinkAttributeId, $linkId);
+    }
+
+    /**
      * Persist's the passed product link data and return's the ID.
      *
      * @param array $productLink The product link data to persist
@@ -126,30 +214,6 @@ class LinkSubject extends AbstractProductSubject
     }
 
     /**
-     * Persist's the passed product link attribute data and return's the ID.
-     *
-     * @param array $productLinkAttribute The product link attribute data to persist
-     *
-     * @return string The ID of the persisted entity
-     */
-    public function persistProductLinkAttribute($productLinkAttribute)
-    {
-        return $this->getProductProcessor()->persistProductLinkAttribute($productLinkAttribute);
-    }
-
-    /**
-     * Persist's the passed product link attribute decimal data.
-     *
-     * @param array $productLinkAttributeDecimal The product link attribute decimal data to persist
-     *
-     * @return void
-     */
-    public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
-    {
-        $this->getProductProcessor()->persistProductLinkAttributeDecimal($productLinkAttributeDecimal);
-    }
-
-    /**
      * Persist's the passed product link attribute integer data.
      *
      * @param array $productLinkAttributeInt The product link attribute integer data to persist
@@ -159,17 +223,5 @@ class LinkSubject extends AbstractProductSubject
     public function persistProductLinkAttributeInt($productLinkAttributeInt)
     {
         $this->getProductProcessor()->persistProductLinkAttributeInt($productLinkAttributeInt);
-    }
-
-    /**
-     * Persist's the passed product link attribute varchar data.
-     *
-     * @param array $productLinkAttributeVarchar The product link attribute varchar data to persist
-     *
-     * @return string The ID of the persisted entity
-     */
-    public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
-    {
-        $this->getProductProcessor()->persistProductLinkAttributeVarchar($productLinkAttributeVarchar);
     }
 }

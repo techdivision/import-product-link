@@ -29,25 +29,22 @@ namespace TechDivision\Import\Product\Link\Utils;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class MemberNames
+class MemberNames extends \TechDivision\Import\Product\Utils\MemberNames
 {
 
     /**
-     * This is a utility class, so protect it against direct
-     * instantiation.
+     * Name for the member 'link_id'.
+     *
+     * @var string
      */
-    private function __construct()
-    {
-    }
+    const LINK_ID = 'link_id';
 
     /**
-     * This is a utility class, so protect it against cloning.
+     * Name for the member 'linked_product_id'.
      *
-     * @return void
+     * @var string
      */
-    private function __clone()
-    {
-    }
+    const LINKED_PRODUCT_ID = 'linked_product_id';
 
     /**
      * Name for the member 'link_type_id'.
@@ -55,4 +52,25 @@ class MemberNames
      * @var string
      */
     const LINK_TYPE_ID = 'link_type_id';
+
+    /**
+     * Name for the member 'product_link_attribute_id'.
+     *
+     * @var string
+     */
+    const PRODUCT_LINK_ATTRIBUTE_ID = 'product_link_attribute_id';
+
+    /**
+     * Name for the member 'product_link_attribute_code'.
+     *
+     * @var string
+     */
+    const PRODUCT_LINK_ATTRIBUTE_CODE = 'product_link_attribute_code';
+
+    /**
+     * Name for the member 'value'.
+     *
+     * @var string
+     */
+    const VALUE = 'value';
 }

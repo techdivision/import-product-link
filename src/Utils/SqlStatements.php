@@ -50,6 +50,27 @@ class SqlStatements
     }
 
     /**
+     * The SQL statement to load an existing product link by product/linked product/link type ID.
+     *
+     * @var string
+     */
+    const PRODUCT_LINK = 'SELECT *
+                            FROM catalog_product_link
+                           WHERE product_id = :product_id
+                             AND linked_product_id = :linked_product_id
+                             AND link_type_id = :link_type_id';
+
+    /**
+     * The SQL statement to load an existing product link attribute integer value by the passed product link attribute ID/link ID/value.
+     *
+     * @var string
+     */
+    const PRODUCT_LINK_ATTRIBUTE_INT = 'SELECT *
+                                          FROM catalog_product_link_attribute_int
+                                         WHERE product_link_attribute_id = :product_link_attribute_id
+                                           AND link_id = :link_id';
+
+    /**
      * The SQL statement to create a new product link.
      *
      * @var string
@@ -60,33 +81,20 @@ class SqlStatements
                                             linked_product_id,
                                             link_type_id
                                         )
-                                 VALUES (?, ?, ?)';
+                                 VALUES (:product_id,
+                                         :linked_product_id,
+                                         :link_type_id)';
 
     /**
-     * The SQL statement to create a new product link attribute.
+     * The SQL statement to update an existing product link.
      *
      * @var string
      */
-    const CREATE_PRODUCT_LINK_ATTRIBUTE = 'INSERT
-                                             INTO catalog_product_link_attribute (
-                                                      link_type_id,
-                                                      product_link_attribute_code,
-                                                      data_type,
-                                                  )
-                                           VALUES (?, ?, ?)';
-
-    /**
-     * The SQL statement to create a new product link attribute decimal value.
-     *
-     * @var string
-     */
-    const CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL = 'INSERT
-                                                     INTO catalog_product_link_attribute_decimal (
-                                                              product_link_attribute_id,
-                                                              link_id,
-                                                              value,
-                                                          )
-                                                   VALUES (?, ?, ?)';
+    const UPDATE_PRODUCT_LINK = 'UPDATE catalog_product_link
+                                    SET product_id = :product_id,
+                                        linked_product_id = :linked_product_id,
+                                        link_type_id = :link_type_id
+                                  WHERE link_id = :link_id';
 
     /**
      * The SQL statement to create a new product link attribute integer value.
@@ -97,20 +105,20 @@ class SqlStatements
                                                  INTO catalog_product_link_attribute_int (
                                                           product_link_attribute_id,
                                                           link_id,
-                                                          value,
+                                                          value
                                                       )
-                                               VALUES (?, ?, ?)';
+                                               VALUES (:product_link_attribute_id,
+                                                       :link_id,
+                                                       :value)';
 
     /**
-     * The SQL statement to create a new product link attribute varchar value.
+     * The SQL statement to update an existing product link attribute integer value.
      *
      * @var string
      */
-    const CREATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR = 'INSERT
-                                                     INTO catalog_product_link_attribute_varchar (
-                                                              product_link_attribute_id,
-                                                              link_id,
-                                                              value,
-                                                          )
-                                                   VALUES (?, ?, ?)';
+    const UPDATE_PRODUCT_LINK_ATTRIBUTE_INT = 'UPDATE catalog_product_link_attribute_int
+                                                  SET product_link_attribute_id = :product_link_attribute_id,
+                                                      link_id = :link_id,
+                                                      value = :value
+                                                WHERE value_id = :value_id';
 }

@@ -20,8 +20,6 @@
 
 namespace TechDivision\Import\Product\Link\Utils;
 
-use TechDivision\Import\Product\Utils\ColumnKeys as FallbackColumnKeys;
-
 /**
  * Utility class containing the CSV column names.
  *
@@ -31,25 +29,8 @@ use TechDivision\Import\Product\Utils\ColumnKeys as FallbackColumnKeys;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ColumnKeys extends FallbackColumnKeys
+class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
 {
-
-    /**
-     * This is a utility class, so protect it against direct
-     * instantiation.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
-     * This is a utility class, so protect it against cloning.
-     *
-     * @return void
-     */
-    private function __clone()
-    {
-    }
 
     /**
      * Name for the column 'link_parent_sku'.
@@ -73,6 +54,13 @@ class ColumnKeys extends FallbackColumnKeys
     const LINK_TYPE_CODE = 'link_type_code';
 
     /**
+     * Name for the column 'link_position'.
+     *
+     * @var string
+     */
+    const LINK_POSITION = 'link_position';
+
+    /**
      * Name for the column 'related_skus'.
      *
      * @var string
@@ -92,4 +80,25 @@ class ColumnKeys extends FallbackColumnKeys
      * @var string
      */
     const CROSSSELL_SKUS = 'crosssell_skus';
+
+    /**
+     * Name for the column 'related_position'.
+     *
+     * @var string
+     */
+    const RELATED_POSITION = 'related_position';
+
+    /**
+     * Name for the column 'upsell_position'.
+     *
+     * @var string
+     */
+    const UPSELL_POSITION = 'upsell_position';
+
+    /**
+     * Name for the column 'crosssell_position'.
+     *
+     * @var string
+     */
+    const CROSSSELL_POSITION = 'crosssell_position';
 }

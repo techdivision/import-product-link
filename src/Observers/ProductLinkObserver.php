@@ -48,10 +48,10 @@ class ProductLinkObserver extends AbstractProductImportObserver
      *
      * @var array
      */
-    protected $linkTypeCodeToColumnNameMapping = array(
-         LinkTypeCodes::RELATION   => ColumnKeys::RELATED_SKUS,
-         LinkTypeCodes::UP_SELL    => ColumnKeys::UPSELL_SKUS,
-         LinkTypeCodes::CROSS_SELL => ColumnKeys::CROSSSELL_SKUS
+    protected $linkTypeCodeToColumnsMapping = array(
+         LinkTypeCodes::RELATION   => array(ColumnKeys::RELATED_SKUS, ColumnKeys::RELATED_POSITION),
+         LinkTypeCodes::UP_SELL    => array(ColumnKeys::UPSELL_SKUS, ColumnKeys::UPSELL_POSITION),
+         LinkTypeCodes::CROSS_SELL => array(ColumnKeys::CROSSSELL_SKUS, ColumnKeys::CROSSSELL_POSITION)
     );
 
     /**
@@ -65,51 +65,74 @@ class ProductLinkObserver extends AbstractProductImportObserver
     public function handle(array $row)
     {
 
+        // initialize the row
+        $this->setRow($row);
+
+        // process the functionality and return the row
+        $this->process();
+
+        // return the processed row
+        return $this->getRow();
+    }
+
+    /**
+     * Process the observer's business logic.
+     *
+     * @return array The processed row
+     */
+    protected function process()
+    {
+
         // initialize the array for the links
         $artefacts = array();
 
         // prepare the links for the found link types and merge the found artefacts
-        foreach ($this->getLinkTypeCodeToColumnNameMapping() as $linkTypeCode => $columnName) {
-            $artefacts = array_merge($artefacts, $this->prepareArtefacts($row, $linkTypeCode, $columnName));
+        foreach ($this->getLinkTypeCodeToColumnsMapping() as $linkTypeCode => $columns) {
+            $artefacts = array_merge($artefacts, $this->prepareArtefacts($linkTypeCode, $columns));
         }
 
         // append the links to the subject
         $this->addArtefacts($artefacts);
-
-        // returns the row
-        return $row;
     }
 
     /**
      * Prepare's and return's the artefacts for the passed link type.
      *
-     * @param array  $row          The row with the artefact data to prepare
      * @param string $linkTypeCode The link type code to prepare the artefacts for
-     * @param string $columnName   The column name that contains the data
+     * @param array  $columns      The column names that contains the data (SKU + position)
      *
      * @return array The link artefacts assembled from the passed row
      */
-    public function prepareArtefacts(array $row, $linkTypeCode, $columnName)
+    protected function prepareArtefacts($linkTypeCode, array $columns)
     {
-
-        // load the header information
-        $headers = $this->getHeaders();
 
         // initialize the array for the product media
         $artefacts = array();
 
+        // extract the column names
+        list ($columnNameSku, $columnNamePosition) = $columns;
+
         // query whether or not, we've up sell products
-        if (!empty($row[$headers[$columnName]])) {
+        if ($links = $this->getValue($columnNameSku, null, array($this, 'explode'))) {
             // load the parent SKU from the row
-            $parentSku = $row[$headers[ColumnKeys::SKU]];
+            $parentSku = $this->getValue(ColumnKeys::SKU);
+            // extract the link positions, if available
+            $linkPositions = $this->getValue($columnNamePosition, array(), array($this, 'explode'));
 
             // load the SKUs of the related products
-            foreach (explode(',', $row[$headers[$columnName]]) as $childSku) {
+            foreach ($links as $key => $childSku) {
+                // prepare the link position
+                $linkPosition = $key + 1;
+                if (isset($linkPositions[$key]) && !empty($linkPositions[$key])) {
+                    $linkPosition = $linkPositions[$key];
+                }
+
                 // prepare and append the relation to the artefacts
                 $artefacts[] = array(
                     ColumnKeys::LINK_PARENT_SKU  => $parentSku,
                     ColumnKeys::LINK_CHILD_SKU   => $childSku,
                     ColumnKeys::LINK_TYPE_CODE   => $linkTypeCode,
+                    ColumnKeys::LINK_POSITION    => $linkPosition
                 );
             }
         }
@@ -119,13 +142,13 @@ class ProductLinkObserver extends AbstractProductImportObserver
     }
 
     /**
-     * Return's the link type code => column name mapping.
+     * Return's the link type code => colums mapping.
      *
-     * @return array The mapping with the link type codes => column names
+     * @return array The mapping with the link type codes => colums
      */
-    public function getLinkTypeCodeToColumnNameMapping()
+    protected function getLinkTypeCodeToColumnsMapping()
     {
-        return $this->linkTypeCodeToColumnNameMapping;
+        return $this->linkTypeCodeToColumnsMapping;
     }
 
     /**
@@ -137,7 +160,7 @@ class ProductLinkObserver extends AbstractProductImportObserver
      * @return void
      * @uses \TechDivision\Import\Product\Media\Subjects\MediaSubject::getLastEntityId()
      */
-    public function addArtefacts(array $artefacts)
+    protected function addArtefacts(array $artefacts)
     {
         $this->getSubject()->addArtefacts(ProductLinkObserver::ARTEFACT_TYPE, $artefacts);
     }
