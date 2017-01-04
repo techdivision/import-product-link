@@ -85,8 +85,8 @@ class LinkObserver extends AbstractProductImportObserver
         $linkTypeCode = $this->getValue(ColumnKeys::LINK_TYPE_CODE);
 
         // load parent/child IDs and link type ID
-        $parentId = $this->mapSkuToEntityId($parentSku);
-        $childId = $this->mapSkuToEntityId($childSku);
+        $parentId = $this->mapSku($parentSku);
+        $childId = $this->mapSku($childSku);
         $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
 
         return $this->initializeEntity(
@@ -142,7 +142,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @return integer The mapped entity ID
      * @throws \Exception Is thrown if the SKU is not mapped yet
      */
-    protected function mapSkuToEntityId($sku)
+    protected function mapSku($sku)
     {
         return $this->getSubject()->mapSkuToEntityId($sku);
     }
