@@ -89,6 +89,7 @@ class LinkObserver extends AbstractProductImportObserver
         $childId = $this->mapSkuToEntityId($childSku);
         $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
 
+        // initialize and return the entity
         return $this->initializeEntity(
             array(
                 MemberNames::PRODUCT_ID        => $parentId,
