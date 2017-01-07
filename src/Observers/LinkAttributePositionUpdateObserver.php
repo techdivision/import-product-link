@@ -44,8 +44,7 @@ class LinkAttributePositionUpdateObserver extends LinkAttributePositionObserver
     protected function initializeProductLinkAttributeInt(array $attr)
     {
 
-        // load value/link/product link attribute ID
-        $value = $attr[MemberNames::VALUE];
+        // load link/product link attribute ID
         $linkId = $attr[MemberNames::LINK_ID];
         $productLinkAttributeId = $attr[MemberNames::PRODUCT_LINK_ATTRIBUTE_ID];
 
