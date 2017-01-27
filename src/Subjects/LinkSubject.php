@@ -23,6 +23,8 @@ namespace TechDivision\Import\Product\Link\Subjects;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
+use TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException;
+use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
 
 /**
  * A subject implementation the process to import product links.
@@ -118,7 +120,7 @@ class LinkSubject extends AbstractProductSubject
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \Exception Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     public function mapSkuToEntityId($sku)
     {
@@ -129,7 +131,14 @@ class LinkSubject extends AbstractProductSubject
         }
 
         // throw an exception if the SKU has not been mapped yet
-        throw new \Exception(sprintf('Found not mapped SKU %s', $sku));
+        throw new MapSkuToEntityIdException(
+            sprintf(
+                'Found not mapped SKU %s in file %s on line %d',
+                $sku,
+                $this->filename,
+                $this->lineNumber
+            )
+        );
     }
 
     /**
@@ -138,7 +147,7 @@ class LinkSubject extends AbstractProductSubject
      * @param string $linkTypeCode The link type code to return the link type ID for
      *
      * @return integer The mapped link type ID
-     * @throws \Exception Is thrown if the link type code is not mapped yet
+     * @throws \TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
      */
     public function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
     {
@@ -149,7 +158,14 @@ class LinkSubject extends AbstractProductSubject
         }
 
         // throw an exception if the link type code has not been mapped yet
-        throw new \Exception(sprintf('Found not mapped link type code %s', $linkTypeCode));
+        throw new MapLinkTypeCodeToIdException(
+            sprintf(
+                'Found not mapped link type code %s in file %s on line %d',
+                $linkTypeCode,
+                $this->filename,
+                $this->lineNumber
+            )
+        );
     }
 
     /**

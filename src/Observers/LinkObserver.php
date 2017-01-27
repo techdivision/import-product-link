@@ -44,11 +44,14 @@ class LinkObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // prepare and initialize product link entity
-        $productLink = $this->initializeProductLink($this->prepareAttributes());
+        // prepare the product link entity
+        if ($attr = $this->prepareAttributes()) {
+            // initialize the product link entity
+            $productLink = $this->initializeProductLink($attr);
 
-        // persist the product link entity and store the link ID
-        $this->setLastLinkId($this->persistProductLink($productLink));
+            // persist the product link entity and store the link ID
+            $this->setLastLinkId($this->persistProductLink($productLink));
+        }
     }
 
     /**
@@ -64,19 +67,32 @@ class LinkObserver extends AbstractProductImportObserver
         $childSku = $this->getValue(ColumnKeys::LINK_CHILD_SKU);
         $linkTypeCode = $this->getValue(ColumnKeys::LINK_TYPE_CODE);
 
-        // load parent/child IDs and link type ID
-        $parentId = $this->mapSku($parentSku);
-        $childId = $this->mapSkuToEntityId($childSku);
-        $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
+        try {
+            // load parent/child IDs and link type ID
+            $parentId = $this->mapSku($parentSku);
+            $childId = $this->mapSkuToEntityId($childSku);
+            $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
 
-        // initialize and return the entity
-        return $this->initializeEntity(
-            array(
-                MemberNames::PRODUCT_ID        => $parentId,
-                MemberNames::LINKED_PRODUCT_ID => $childId,
-                MemberNames::LINK_TYPE_ID      => $linkTypeId
-            )
-        );
+            // initialize and return the entity
+            return $this->initializeEntity(
+                array(
+                    MemberNames::PRODUCT_ID        => $parentId,
+                    MemberNames::LINKED_PRODUCT_ID => $childId,
+                    MemberNames::LINK_TYPE_ID      => $linkTypeId
+                )
+            );
+
+        } catch (\Exception $e) {
+            // query whether or not, debug mode is enabled
+            if ($this->isDebugMode()) {
+                // log a warning and return immediately
+                $this->getSystemLogger()->warning($e->getMessage());
+                return;
+            }
+
+            // if we're NOT in debug mode, re-throw the exception
+            throw $e;
+        }
     }
 
     /**
@@ -121,7 +137,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \Exception Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     protected function mapSkuToEntityId($sku)
     {
@@ -134,7 +150,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \Exception Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     protected function mapSku($sku)
     {
@@ -147,10 +163,20 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $linkTypeCode The link type code to return the link type ID for
      *
      * @return integer The mapped link type ID
-     * @throws \Exception Is thrown if the link type code is not mapped yet
+     * @throws \TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
      */
     protected function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
     {
         return $this->getSubject()->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
+    }
+
+    /**
+     * Queries whether or not debug mode is enabled or not, default is TRUE.
+     *
+     * @return boolean TRUE if debug mode is enabled, else FALSE
+     */
+    protected function isDebugMode()
+    {
+        return $this->getSubject()->isDebugMode();
     }
 }

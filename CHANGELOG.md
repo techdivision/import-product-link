@@ -1,3 +1,14 @@
+# Version 1.0.0-alpha8
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Ignore missing SKUs in product relations in debug mode
+* Add CSV filename/line number to exceptions to improve error handling/debugging
+
 # Version 1.0.0-alpha7
 
 ## Bugfixes
