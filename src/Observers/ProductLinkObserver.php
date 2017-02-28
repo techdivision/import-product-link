@@ -21,11 +21,12 @@
 namespace TechDivision\Import\Product\Link\Observers;
 
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
+use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Link\Utils\LinkTypeCodes;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
- * A SLSB that handles the process to import product links.
+ * Prepares the artefacts for the generic link type import.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -44,17 +45,6 @@ class ProductLinkObserver extends AbstractProductImportObserver
     const ARTEFACT_TYPE = 'links';
 
     /**
-     * The mapping with the link type codes => column names.
-     *
-     * @var array
-     */
-    protected $linkTypeCodeToColumnsMapping = array(
-         LinkTypeCodes::RELATION   => array(ColumnKeys::RELATED_SKUS, ColumnKeys::RELATED_POSITION),
-         LinkTypeCodes::UP_SELL    => array(ColumnKeys::UPSELL_SKUS, ColumnKeys::UPSELL_POSITION),
-         LinkTypeCodes::CROSS_SELL => array(ColumnKeys::CROSSSELL_SKUS, ColumnKeys::CROSSSELL_POSITION)
-    );
-
-    /**
      * Process the observer's business logic.
      *
      * @return array The processed row
@@ -66,7 +56,7 @@ class ProductLinkObserver extends AbstractProductImportObserver
         $artefacts = array();
 
         // prepare the links for the found link types and merge the found artefacts
-        foreach ($this->getLinkTypeCodeToColumnsMapping() as $linkTypeCode => $columns) {
+        foreach ($this->getLinkTypeMappings() as $linkTypeCode => $columns) {
             $artefacts = array_merge($artefacts, $this->prepareArtefacts($linkTypeCode, $columns));
         }
 
@@ -121,13 +111,36 @@ class ProductLinkObserver extends AbstractProductImportObserver
     }
 
     /**
+     * Return's the available link types.
+     *
+     * @return array The link types
+     */
+    protected function getLinkTypes()
+    {
+        return $this->getSubject()->getLinkTypes();
+    }
+
+    /**
      * Return's the link type code => colums mapping.
      *
      * @return array The mapping with the link type codes => colums
      */
-    protected function getLinkTypeCodeToColumnsMapping()
+    protected function getLinkTypeMappings()
     {
-        return $this->linkTypeCodeToColumnsMapping;
+
+        // initialize the array with link type mappings
+        $linkTypeMappings = array();
+
+        // prepare the link type mappings
+        foreach ($this->getLinkTypes() as $linkType) {
+            $linkTypeMappings[$linkType[MemberNames::CODE]] = array(
+                sprintf('%s_skus', $linkType[MemberNames::CODE]),
+                sprintf('%s_position', $linkType[MemberNames::CODE]),
+            );
+        }
+
+        // return the link type mappings
+        return $linkTypeMappings;
     }
 
     /**
