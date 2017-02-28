@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha9
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Make product link creation more generic to map link types to CSV file columns
+
 # Version 1.0.0-alpha8
 
 ## Bugfixes
