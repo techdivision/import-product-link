@@ -23,6 +23,7 @@ namespace TechDivision\Import\Product\Link\Observers;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
 
 /**
  * Oberserver that provides functionality for the product link replace operation.
@@ -62,26 +63,23 @@ class LinkObserver extends AbstractProductImportObserver
     protected function prepareAttributes()
     {
 
-        // extract the parent/child ID as well as the link type code from the row
-        $parentSku = $this->getValue(ColumnKeys::LINK_PARENT_SKU);
-        $childSku = $this->getValue(ColumnKeys::LINK_CHILD_SKU);
-        $linkTypeCode = $this->getValue(ColumnKeys::LINK_TYPE_CODE);
+        try {
+            // extract the parent ID from the row
+            $parentId = $this->mapSku($this->getValue(ColumnKeys::LINK_PARENT_SKU));
+        } catch (\Exception $e) {
+            throw $this->wrapException(array(ColumnKeys::LINK_PARENT_SKU), $e);
+        }
 
         try {
-            // load parent/child IDs and link type ID
-            $parentId = $this->mapSku($parentSku);
-            $childId = $this->mapSkuToEntityId($childSku);
-            $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($linkTypeCode);
+            // extract the child ID from the row
+            $childId = $this->mapSkuToEntityId($this->getValue(ColumnKeys::LINK_CHILD_SKU));
+        } catch (\Exception $e) {
+            throw $this->wrapException(array(ColumnKeys::LINK_CHILD_SKU), $e);
+        }
 
-            // initialize and return the entity
-            return $this->initializeEntity(
-                array(
-                    MemberNames::PRODUCT_ID        => $parentId,
-                    MemberNames::LINKED_PRODUCT_ID => $childId,
-                    MemberNames::LINK_TYPE_ID      => $linkTypeId
-                )
-            );
-
+        try {
+            // extract the link type code from the row
+            $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($this->getValue(ColumnKeys::LINK_TYPE_CODE));
         } catch (\Exception $e) {
             // query whether or not, debug mode is enabled
             if ($this->isDebugMode()) {
@@ -93,6 +91,15 @@ class LinkObserver extends AbstractProductImportObserver
             // if we're NOT in debug mode, re-throw the exception
             throw $e;
         }
+
+        // initialize and return the entity
+        return $this->initializeEntity(
+            array(
+                MemberNames::PRODUCT_ID        => $parentId,
+                MemberNames::LINKED_PRODUCT_ID => $childId,
+                MemberNames::LINK_TYPE_ID      => $linkTypeId
+            )
+        );
     }
 
     /**

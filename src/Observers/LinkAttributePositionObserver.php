@@ -61,8 +61,20 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
         // initialize the attribute code
         $attributeCode = LinkAttributePositionObserver::ATTRIBUTE_CODE;
 
-        // extract the link type code from the row and load link type ID
-        $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($this->getValue(ColumnKeys::LINK_TYPE_CODE));
+        try {
+            // extract the link type code from the row
+            $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($this->getValue(ColumnKeys::LINK_TYPE_CODE));
+        } catch (\Exception $e) {
+            // query whether or not, debug mode is enabled
+            if ($this->isDebugMode()) {
+                // log a warning and return immediately
+                $this->getSystemLogger()->warning($e->getMessage());
+                return;
+            }
+
+            // if we're NOT in debug mode, re-throw the exception
+            throw $e;
+        }
 
         // try to load the product link attribute
         if ($productLinkAttribute = $this->getProductLinkAttribute($linkTypeId, $attributeCode)) {

@@ -25,6 +25,7 @@ use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException;
 use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
+use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 
 /**
  * A subject implementation the process to import product links.
@@ -132,11 +133,8 @@ class LinkSubject extends AbstractProductSubject
 
         // throw an exception if the SKU has not been mapped yet
         throw new MapSkuToEntityIdException(
-            sprintf(
-                'Found not mapped SKU %s in file %s on line %d',
-                $sku,
-                $this->filename,
-                $this->lineNumber
+            $this->appendExceptionSuffix(
+                sprintf('Found not mapped entity ID for SKU %s', $sku)
             )
         );
     }
@@ -159,11 +157,8 @@ class LinkSubject extends AbstractProductSubject
 
         // throw an exception if the link type code has not been mapped yet
         throw new MapLinkTypeCodeToIdException(
-            sprintf(
-                'Found not mapped link type code %s in file %s on line %d',
-                $linkTypeCode,
-                $this->filename,
-                $this->lineNumber
+            $this->appendExceptionSuffix(
+                sprintf('Found not mapped link type code %s', $linkTypeCode)
             )
         );
     }
