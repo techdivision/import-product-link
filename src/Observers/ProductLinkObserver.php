@@ -22,7 +22,6 @@ namespace TechDivision\Import\Product\Link\Observers;
 
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
-use TechDivision\Import\Product\Link\Utils\LinkTypeCodes;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
@@ -97,11 +96,18 @@ class ProductLinkObserver extends AbstractProductImportObserver
                 }
 
                 // prepare and append the relation to the artefacts
-                $artefacts[] = array(
-                    ColumnKeys::LINK_PARENT_SKU  => $parentSku,
-                    ColumnKeys::LINK_CHILD_SKU   => $childSku,
-                    ColumnKeys::LINK_TYPE_CODE   => $linkTypeCode,
-                    ColumnKeys::LINK_POSITION    => $linkPosition
+                $artefacts[] = $this->newArtefact(
+                    array(
+                        ColumnKeys::LINK_PARENT_SKU => $parentSku,
+                        ColumnKeys::LINK_CHILD_SKU  => $childSku,
+                        ColumnKeys::LINK_TYPE_CODE  => $linkTypeCode,
+                        ColumnKeys::LINK_POSITION   => $linkPosition
+                    ),
+                    array(
+                        ColumnKeys::LINK_PARENT_SKU => ColumnKeys::SKU,
+                        ColumnKeys::LINK_CHILD_SKU  => $columnNameSku,
+                        ColumnKeys::LINK_POSITION   => $columnNamePosition
+                    )
                 );
             }
         }
@@ -141,6 +147,19 @@ class ProductLinkObserver extends AbstractProductImportObserver
 
         // return the link type mappings
         return $linkTypeMappings;
+    }
+
+    /**
+     * Create's and return's a new empty artefact entity.
+     *
+     * @param array $columns             The array with the column data
+     * @param array $originalColumnNames The array with a mapping from the old to the new column names
+     *
+     * @return array The new artefact entity
+     */
+    protected function newArtefact(array $columns, array $originalColumnNames)
+    {
+        return $this->getSubject()->newArtefact($columns, $originalColumnNames);
     }
 
     /**
