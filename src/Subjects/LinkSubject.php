@@ -25,7 +25,6 @@ use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException;
 use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
-use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 
 /**
  * A subject implementation the process to import product links.

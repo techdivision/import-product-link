@@ -1,3 +1,14 @@
+# Version 1.0.0-alpha11
+
+## Bugfixes
+
+* Fixed invalid PHPCS check in RoboFile.php
+* Remove unnecessary use statement in LinkSubject
+
+## Features
+
+* None
+
 # Version 1.0.0-alpha10
 
 ## Bugfixes
