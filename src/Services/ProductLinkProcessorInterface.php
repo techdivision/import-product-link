@@ -56,32 +56,11 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
     public function getProductLinkAction();
 
     /**
-     * Return's the action with the product link attribute CRUD methods.
-     *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeAction The action with the product link attribute CRUD methods
-     */
-    public function getProductLinkAttributeAction();
-
-    /**
-     * Return's the action with the product link attribute decimal CRUD methods.
-     *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalAction The action with the product link attribute decimal CRUD methods
-     */
-    public function getProductLinkAttributeDecimalAction();
-
-    /**
      * Return's the action with the product link attribute integer CRUD methods.
      *
      * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction The action with the product link attribute integer CRUD methods
      */
     public function getProductLinkAttributeIntAction();
-
-    /**
-     * Return's the action with the product link attribute varchar CRUD methods.
-     *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharAction The action with the product link attribute varchar CRUD methods
-     */
-    public function getProductLinkAttributeVarcharAction();
 
     /**
      * Load's the link with the passed product/linked product/link type ID.
@@ -114,24 +93,6 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
     public function persistProductLink($productLink);
 
     /**
-     * Persist's the passed product link attribute data and return's the ID.
-     *
-     * @param array $productLinkAttribute The product link attribute data to persist
-     *
-     * @return string The ID of the persisted entity
-     */
-    public function persistProductLinkAttribute($productLinkAttribute);
-
-    /**
-     * Persist's the passed product link attribute decimal data.
-     *
-     * @param array $productLinkAttributeDecimal The product link attribute decimal data to persist
-     *
-     * @return void
-     */
-    public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal);
-
-    /**
      * Persist's the passed product link attribute integer data.
      *
      * @param array $productLinkAttributeInt The product link attribute integer data to persist
@@ -139,13 +100,4 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
      * @return string The ID of the persisted entity
      */
     public function persistProductLinkAttributeInt($productLinkAttributeInt);
-
-    /**
-     * Persist's the passed product link attribute varchar data.
-     *
-     * @param array $productLinkAttributeVarchar The product link attribute varchar data to persist
-     *
-     * @return string The ID of the persisted entity
-     */
-    public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar);
 }
