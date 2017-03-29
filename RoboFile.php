@@ -156,8 +156,8 @@ class RoboFile extends \Robo\Tasks
                 $this->properties['vendor.dir'],
                 $this->properties['target.dir'],
                 $this->properties['src.dir']
-                )
-            );
+            )
+        );
     }
 
     /**
