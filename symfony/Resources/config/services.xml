@@ -58,6 +58,8 @@
         <service id="import_product_link.observer.link.update" class="TechDivision\Import\Product\Link\Observers\LinkUpdateObserver"/>
         <service id="import_product_link.observer.product.link" class="TechDivision\Import\Product\Link\Observers\ProductLinkObserver"/>
 
+        <service id="configuration.import_product_link.subject.link" synthetic="true" />
+
         <service id="import_product_link.subject.link" class="TechDivision\Import\Product\Link\Subjects\LinkSubject" shared="false">
             <argument type="service" id="configuration.import_product_link.subject.link"/>
             <argument type="service" id="import.processor.registry"/>
