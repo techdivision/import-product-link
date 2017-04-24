@@ -25,7 +25,8 @@
 		"psr-4" : {
 			"TechDivision\\Import\\Product\\Link\\" : [
 				"src/",
-				"tests/"
+				"tests/",
+				"symfony"
 			]
 		}
 	}
