@@ -1,3 +1,13 @@
+# Version 1.0.0-beta2
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Update configuration examples in README.md file
+
 # Version 1.0.0-beta1
 
 ## Bugfixes

@@ -21,27 +21,22 @@ file
 {
   "magento-edition": "CE",
   "magento-version": "2.1.2",
-  "operation-name" : "replace",
+  "operation-name" : "add-update",
   "installation-dir" : "/var/www/magento",
-  "utility-class-name" : "TechDivision\\Import\\Utils\\SqlStatements",
   "database": { ... },
-  "operations" : [
+  "operations": [
     {
-      "name" : "replace",
+      "name": "replace",
       "subjects": [
         { ... },
         {
-          "class-name": "TechDivision\\Import\\Product\\Link\\Subjects\\LinkSubject",
-          "processor-factory" : "TechDivision\\Import\\Cli\\Services\\ProductLinkProcessorFactory",
-          "utility-class-name" : "TechDivision\\Import\\Product\\Link\\Utils\\SqlStatements",
+          "id": "import_product_link.subject.link",
           "prefix": "links",
-          "source-dir": "projects/sample-data/tmp",
-          "target-dir": "projects/sample-data/tmp",
           "observers": [
             {
               "import": [
-                "TechDivision\\Import\\Product\\Link\\Observers\\LinkObserver",
-                "TechDivision\\Import\\Product\\Link\\Observers\\LinkAttributePositionObserver"
+                "import_product_link.observer.link",
+                "import_product_link.observer.link.attribute.position"
               ]
             }
           ]
@@ -53,17 +48,13 @@ file
       "subjects": [
         { ... },
         {
-          "class-name": "TechDivision\\Import\\Product\\Link\\Subjects\\LinkSubject",
-          "processor-factory" : "TechDivision\\Import\\Cli\\Services\\ProductLinkProcessorFactory",
-          "utility-class-name" : "TechDivision\\Import\\Product\\Link\\Utils\\SqlStatements",
+          "id": "import_product_link.subject.link",
           "prefix": "links",
-          "source-dir": "projects/sample-data/tmp",
-          "target-dir": "projects/sample-data/tmp",
           "observers": [
             {
               "import": [
-                "TechDivision\\Import\\Product\\Link\\Observers\\LinkUpdateObserver",
-                "TechDivision\\Import\\Product\\Link\\Observers\\LinkAttributePositionUpdateObserver"
+                "import_product_link.observer.link.update",
+                "import_product_link.observer.link.attribute.position.update"
               ]
             }
           ]
@@ -76,9 +67,9 @@ file
 
 ## Product Link Positions (CE)
 
-Magento 2 CE supports positions for product links, as well as Magento 2 EE. By default, importing
-product positions is **NOT** possible in the CE, because the database of the CE lack's of missing
-rows in the `catalog_product_link_attribute` table.
+Magento 2 CE supports positions for product links, as well as Magento 2 EE. By default, up to 
+version 2.1.6, importing product positions is **NOT** possible in the CE, because the database 
+of the CE lack's of missing rows in the `catalog_product_link_attribute` table.
 
 In case, that the rows are not available, the positions, defined in the CSV file's columns 
 
