@@ -54,7 +54,8 @@ class ProductLinkRepository extends AbstractRepository
         $utilityClassName = $this->getUtilityClassName();
 
         // initialize the prepared statements
-        $this->productLinkStmt = $this->getConnection()->prepare($utilityClassName::PRODUCT_LINK);
+        $this->productLinkStmt =
+            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_LINK));
     }
 
     /**

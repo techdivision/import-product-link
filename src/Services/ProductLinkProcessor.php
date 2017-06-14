@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Link\Services;
 
+use TechDivision\Import\Connection\ConnectionInterface;
 use TechDivision\Import\Product\Link\Repositories\ProductLinkRepository;
 use TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAction;
@@ -40,7 +41,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * A PDO connection initialized with the values from the Doctrine EntityManager.
      *
-     * @var \PDO
+     * @var \TechDivision\Import\Connection\ConnectionInterface
      */
     protected $connection;
 
@@ -75,14 +76,14 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
-     * @param \PDO                                                                              $connection                        The PDO connection to use
+     * @param \TechDivision\Import\Connection\ConnectionInterface                               $connection                        The connection to use
      * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepository             $productLinkRepository             The product link repository to use
      * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepository $productLinkAttributeIntRepository The product link attribute integer repository to use
      * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAction                       $productLinkAction                 The product link action to use
      * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction           $productLinkAttributeIntAction     The product link attribute integer action to use
      */
     public function __construct(
-        \PDO $connection,
+        ConnectionInterface $connection,
         ProductLinkRepository $productLinkRepository,
         ProductLinkAttributeIntRepository $productLinkAttributeIntRepository,
         ProductLinkAction $productLinkAction,
@@ -98,11 +99,11 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Set's the passed connection.
      *
-     * @param \PDO $connection The connection to set
+     * @param \TechDivision\Import\Connection\ConnectionInterface $connection The connection to set
      *
      * @return void
      */
-    public function setConnection(\PDO $connection)
+    public function setConnection(ConnectionInterface $connection)
     {
         $this->connection = $connection;
     }
@@ -110,7 +111,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Return's the connection.
      *
-     * @return \PDO The connection instance
+     * @return \TechDivision\Import\Connection\ConnectionInterface The connection instance
      */
     public function getConnection()
     {

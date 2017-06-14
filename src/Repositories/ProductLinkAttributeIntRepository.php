@@ -54,7 +54,8 @@ class ProductLinkAttributeIntRepository extends AbstractRepository
         $utilityClassName = $this->getUtilityClassName();
 
         // initialize the prepared statements
-        $this->productLinkAttributeIntStmt = $this->getConnection()->prepare($utilityClassName::PRODUCT_LINK_ATTRIBUTE_INT);
+        $this->productLinkAttributeIntStmt =
+            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_LINK_ATTRIBUTE_INT));
     }
 
     /**
