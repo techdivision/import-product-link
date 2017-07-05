@@ -23,6 +23,7 @@ namespace TechDivision\Import\Product\Link\Observers;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
 
 /**
@@ -36,6 +37,33 @@ use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
  */
 class LinkObserver extends AbstractProductImportObserver
 {
+
+    /**
+     * The product link processor instance.
+     *
+     * @var \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface
+     */
+    protected $productLinkProcessor;
+
+    /**
+     * Initialize the observer with the passed product link processor instance.
+     *
+     * @param \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface $productLinkProcessor The product link processor instance
+     */
+    public function __construct(ProductLinkProcessorInterface $productLinkProcessor)
+    {
+        $this->productLinkProcessor= $productLinkProcessor;
+    }
+
+    /**
+     * Return's the product link processor instance.
+     *
+     * @return \TechDivision\Import\Product\Bundle\Services\ProductBundleProcessorInterface The product link processor instance
+     */
+    protected function getProductLinkProcessor()
+    {
+        return $this->productLinkProcessor;
+    }
 
     /**
      * Process the observer's business logic.
@@ -135,7 +163,7 @@ class LinkObserver extends AbstractProductImportObserver
      */
     protected function persistProductLink($productLink)
     {
-        return $this->getSubject()->persistProductLink($productLink);
+        return $this->getProductLinkProcessor()->persistProductLink($productLink);
     }
 
     /**

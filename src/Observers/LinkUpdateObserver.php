@@ -69,6 +69,6 @@ class LinkUpdateObserver extends LinkObserver
      */
     protected function loadProductLink($productId, $linkedProductId, $linkTypeId)
     {
-        return $this->getSubject()->loadProductLink($productId, $linkedProductId, $linkTypeId);
+        return $this->getProductLinkProcessor()->loadProductLink($productId, $linkedProductId, $linkTypeId);
     }
 }
