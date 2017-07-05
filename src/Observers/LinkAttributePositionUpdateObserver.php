@@ -67,6 +67,6 @@ class LinkAttributePositionUpdateObserver extends LinkAttributePositionObserver
      */
     protected function loadProductLinkAttributeInt($productLinkAttributeId, $linkId)
     {
-        return $this->getSubject()->loadProductLinkAttributeInt($productLinkAttributeId, $linkId);
+        return $this->getProductLinkProcessor()->loadProductLinkAttributeInt($productLinkAttributeId, $linkId);
     }
 }

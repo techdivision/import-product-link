@@ -23,6 +23,7 @@ namespace TechDivision\Import\Product\Link\Observers;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 
 /**
  * Oberserver that provides functionality for the product link attribute position replace operation.
@@ -49,6 +50,33 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
      * @var integer
      */
     protected $productLinktAttributeId;
+
+    /**
+     * The product link processor instance.
+     *
+     * @var \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface
+     */
+    protected $productLinkProcessor;
+
+    /**
+     * Initialize the observer with the passed product link processor instance.
+     *
+     * @param \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface $productLinkProcessor The product link processor instance
+     */
+    public function __construct(ProductLinkProcessorInterface $productLinkProcessor)
+    {
+        $this->productLinkProcessor= $productLinkProcessor;
+    }
+
+    /**
+     * Return's the product link processor instance.
+     *
+     * @return \TechDivision\Import\Product\Bundle\Services\ProductBundleProcessorInterface The product link processor instance
+     */
+    protected function getProductLinkProcessor()
+    {
+        return $this->productLinkProcessor;
+    }
 
     /**
      * Process the observer's business logic.
@@ -194,6 +222,6 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
      */
     protected function persistProductLinkAttributeInt($productLinkAttributeInt)
     {
-        $this->getSubject()->persistProductLinkAttributeInt($productLinkAttributeInt);
+        $this->getProductLinkProcessor()->persistProductLinkAttributeInt($productLinkAttributeInt);
     }
 }
