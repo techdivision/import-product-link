@@ -71,7 +71,7 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
     /**
      * Return's the product link processor instance.
      *
-     * @return \TechDivision\Import\Product\Bundle\Services\ProductBundleProcessorInterface The product link processor instance
+     * @return \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface The product link processor instance
      */
     protected function getProductLinkProcessor()
     {

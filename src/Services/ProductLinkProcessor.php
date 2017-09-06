@@ -221,7 +221,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Return's the action with the product link CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkGalleryAction The action with the product link CRUD methods
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAction The action with the product link CRUD methods
      */
     public function getProductLinkAction()
     {
