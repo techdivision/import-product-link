@@ -1,3 +1,13 @@
+# Version 1.0.0-beta6
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Fixed typos and remove unnecessary use statements
+
 # Version 1.0.0-beta5
 
 ## Bugfixes

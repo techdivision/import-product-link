@@ -24,7 +24,6 @@ use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
-use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
 
 /**
  * Oberserver that provides functionality for the product link replace operation.
@@ -58,7 +57,7 @@ class LinkObserver extends AbstractProductImportObserver
     /**
      * Return's the product link processor instance.
      *
-     * @return \TechDivision\Import\Product\Bundle\Services\ProductBundleProcessorInterface The product link processor instance
+     * @return \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface The product link processor instance
      */
     protected function getProductLinkProcessor()
     {
