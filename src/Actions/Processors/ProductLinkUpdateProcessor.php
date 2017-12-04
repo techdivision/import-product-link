@@ -20,8 +20,9 @@
 
 namespace TechDivision\Import\Product\Link\Actions\Processors;
 
-use TechDivision\Import\Actions\Processors\AbstractUpdateProcessor;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
+use TechDivision\Import\Product\Link\Utils\SqlStatementKeys;
+use TechDivision\Import\Actions\Processors\AbstractUpdateProcessor;
 
 /**
  * The product link update processor implementation.
@@ -44,12 +45,9 @@ class ProductLinkUpdateProcessor extends AbstractUpdateProcessor
     protected function getStatements()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::UPDATE_PRODUCT_LINK => $this->getUtilityClass()->find($utilityClassName::UPDATE_PRODUCT_LINK)
+            SqlStatementKeys::UPDATE_PRODUCT_LINK => $this->loadStatement(SqlStatementKeys::UPDATE_PRODUCT_LINK)
         );
     }
 

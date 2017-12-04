@@ -5,32 +5,31 @@
 
     <services>
 
-        <service id="import_product_link.utility.class.name" class="TechDivision\Import\Product\Link\Utils\SqlStatements"/>
-
+        <service id="import_product_link.repository.sql.statement" class="TechDivision\Import\Product\Link\Repositories\SqlStatementRepository"/>
         <service id="import_product_link.repository.product.link" class="TechDivision\Import\Product\Link\Repositories\ProductLinkRepository">
             <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_link.utility.class.name"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
         <service id="import_product_link.repository.product.link.attribute.int" class="TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository">
             <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_link.utility.class.name"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
 
         <service id="import_product_link.action.processor.product.link.create" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkCreateProcessor">
             <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_link.utility.class.name"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
         <service id="import_product_link.action.processor.product.link.update" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkUpdateProcessor">
             <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_link.utility.class.name"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
         <service id="import_product_link.action.processor.product.link.attribute.int.create" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeIntCreateProcessor">
             <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_link.utility.class.name"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
         <service id="import_product_link.action.processor.product.link.attribute.int.update" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeIntUpdateProcessor">
             <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_link.utility.class.name"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
 
         <service id="import_product_link.action.product.link" class="TechDivision\Import\Product\Link\Actions\ProductLinkAction">
