@@ -44,12 +44,9 @@ class ProductLinkAttributeIntCreateProcessor extends AbstractCreateProcessor
     protected function getStatements()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_LINK_ATTRIBUTE_INT => $this->loadStatement(SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_INT)
+            SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_INT => $this->loadStatement(SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_INT)
         );
     }
 }
