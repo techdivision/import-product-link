@@ -21,6 +21,7 @@
 namespace TechDivision\Import\Product\Link\Repositories;
 
 use TechDivision\Import\Product\Link\Utils\MemberNames;
+use TechDivision\Import\Product\Link\Utils\SqlStatementKeys;
 use TechDivision\Import\Repositories\AbstractRepository;
 
 /**
@@ -50,12 +51,9 @@ class ProductLinkAttributeIntRepository extends AbstractRepository
     public function init()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // initialize the prepared statements
         $this->productLinkAttributeIntStmt =
-            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_LINK_ATTRIBUTE_INT));
+            $this->getConnection()->prepare($this->loadStatement(SqlStatementKeys::PRODUCT_LINK_ATTRIBUTE_INT));
     }
 
     /**

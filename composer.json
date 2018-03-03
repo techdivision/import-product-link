@@ -2,7 +2,7 @@
     "name": "techdivision/import-product-link",
     "description": "M2IF library providing basic Magento 2 product link import functionality",
     "minimum-stability": "alpha",
-    "license": "OSL-3",
+    "license": "OSL-3.0",
     "require": {
         "techdivision/import-product": "~1.0"
     },
