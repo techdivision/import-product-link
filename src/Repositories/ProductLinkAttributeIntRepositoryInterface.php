@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntAction
+ * TechDivision\Import\Product\Bundle\Repositories\ProductLinkAttributeIntRepositoryInterface
  *
  * NOTICE OF LICENSE
  *
@@ -18,12 +18,12 @@
  * @link      http://www.techdivision.com
  */
 
-namespace TechDivision\Import\Product\Link\Actions;
+namespace TechDivision\Import\Product\Link\Repositories;
 
-use TechDivision\Import\Actions\AbstractAction;
+use TechDivision\Import\Repositories\RepositoryInterface;
 
 /**
- * An action implementation that provides CRUD functionality for product link integer attributes.
+ * Repository implementation to load product link attribute integer data.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,6 +31,15 @@ use TechDivision\Import\Actions\AbstractAction;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ProductLinkAttributeIntAction extends AbstractAction implements ProductLinkAttributeIntActionInterface
+interface ProductLinkAttributeIntRepositoryInterface extends RepositoryInterface
 {
+    /**
+     * Return's the product link attribute integer value with the passed product link attribute/link ID.
+     *
+     * @param integer $productLinkAttributeId The product link attribute ID of the attributes
+     * @param integer $linkId                 The link ID of the attribute
+     *
+     * @return array The product link attribute integer value
+     */
+    public function findOneByProductLinkAttributeIdAndLinkId($productLinkAttributeId, $linkId);
 }

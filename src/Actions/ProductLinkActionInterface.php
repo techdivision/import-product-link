@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntAction
+ * TechDivision\Import\Product\Link\Repositories\ProductLinkActionInterface
  *
  * NOTICE OF LICENSE
  *
@@ -20,10 +20,10 @@
 
 namespace TechDivision\Import\Product\Link\Actions;
 
-use TechDivision\Import\Actions\AbstractAction;
+use TechDivision\Import\Actions\ActionInterface;
 
 /**
- * An action implementation that provides CRUD functionality for product link integer attributes.
+ * Interface for action implementations that provides CRUD functionality for product links.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,6 +31,6 @@ use TechDivision\Import\Actions\AbstractAction;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ProductLinkAttributeIntAction extends AbstractAction implements ProductLinkAttributeIntActionInterface
+interface ProductLinkActionInterface extends ActionInterface
 {
 }
