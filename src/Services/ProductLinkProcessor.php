@@ -21,13 +21,13 @@
 namespace TechDivision\Import\Product\Link\Services;
 
 use TechDivision\Import\Connection\ConnectionInterface;
-use TechDivision\Import\Product\Link\Repositories\ProductLinkRepository;
-use TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository;
-use TechDivision\Import\Product\Link\Actions\ProductLinkAction;
-use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction;
+use TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface;
+use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface;
+use TechDivision\Import\Product\Link\Repositories\ProductLinkRepositoryInterface;
+use TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepositoryInterface;
 
 /**
- * A SLSB providing methods to load product data using a PDO connection.
+ * The product link processor implementation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -48,46 +48,46 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * The repository to load product links.
      *
-     * @var \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepository
+     * @var \TechDivision\Import\Product\Link\Repositories\ProductLinkRepositoryInterface
      */
     protected $productLinkRepository;
 
     /**
      * The repository to load product link attribute integer attributes.
      *
-     * @var \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepository
+     * @var \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepositoryInterface
      */
     protected $productLinkAttributeIntRepository;
 
     /**
      * The action with the product link CRUD methods.
      *
-     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAction
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface
      */
     protected $productLinkAction;
 
     /**
      * The action with the product link attribute integer CRUD methods.
      *
-     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface
      */
     protected $productLinkAttributeIntAction;
 
     /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
-     * @param \TechDivision\Import\Connection\ConnectionInterface                               $connection                        The connection to use
-     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepository             $productLinkRepository             The product link repository to use
-     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepository $productLinkAttributeIntRepository The product link attribute integer repository to use
-     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAction                       $productLinkAction                 The product link action to use
-     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction           $productLinkAttributeIntAction     The product link attribute integer action to use
+     * @param \TechDivision\Import\Connection\ConnectionInterface                                        $connection                        The connection to use
+     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepositoryInterface             $productLinkRepository             The product link repository to use
+     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepositoryInterface $productLinkAttributeIntRepository The product link attribute integer repository to use
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface                       $productLinkAction                 The product link action to use
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface           $productLinkAttributeIntAction     The product link attribute integer action to use
      */
     public function __construct(
         ConnectionInterface $connection,
-        ProductLinkRepository $productLinkRepository,
-        ProductLinkAttributeIntRepository $productLinkAttributeIntRepository,
-        ProductLinkAction $productLinkAction,
-        ProductLinkAttributeIntAction $productLinkAttributeIntAction
+        ProductLinkRepositoryInterface $productLinkRepository,
+        ProductLinkAttributeIntRepositoryInterface $productLinkAttributeIntRepository,
+        ProductLinkActionInterface $productLinkAction,
+        ProductLinkAttributeIntActionInterface $productLinkAttributeIntAction
     ) {
         $this->setConnection($connection);
         $this->setProductLinkRepository($productLinkRepository);
@@ -165,11 +165,11 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Set's the repository to load product links.
      *
-     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkRepository $productLinkRepository The repository instance
+     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkRepositoryInterface $productLinkRepository The repository instance
      *
      * @return void
      */
-    public function setProductLinkRepository($productLinkRepository)
+    public function setProductLinkRepository(ProductLinkRepositoryInterface $productLinkRepository)
     {
         $this->productLinkRepository = $productLinkRepository;
     }
@@ -177,7 +177,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Return's the repository to load product links.
      *
-     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkRepository The repository instance
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkRepositoryInterface The repository instance
      */
     public function getProductLinkRepository()
     {
@@ -187,11 +187,11 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Set's the repository to load product link attribute integer attributes.
      *
-     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository $productLinkAttributeIntRepository The repository instance
+     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepositoryInterface $productLinkAttributeIntRepository The repository instance
      *
      * @return void
      */
-    public function setProductLinkAttributeIntRepository($productLinkAttributeIntRepository)
+    public function setProductLinkAttributeIntRepository(ProductLinkAttributeIntRepositoryInterface $productLinkAttributeIntRepository)
     {
         $this->productLinkAttributeIntRepository = $productLinkAttributeIntRepository;
     }
@@ -199,7 +199,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Return's the repository to load product link attribute integer attributes.
      *
-     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository The repository instance
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepositoryInterface The repository instance
      */
     public function getProductLinkAttributeIntRepository()
     {
@@ -209,11 +209,11 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Set's the action with the product link CRUD methods.
      *
-     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAction $productLinkAction The action with the product link CRUD methods
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface $productLinkAction The action with the product link CRUD methods
      *
      * @return void
      */
-    public function setProductLinkAction($productLinkAction)
+    public function setProductLinkAction(ProductLinkActionInterface $productLinkAction)
     {
         $this->productLinkAction = $productLinkAction;
     }
@@ -221,7 +221,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Return's the action with the product link CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAction The action with the product link CRUD methods
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface The action with the product link CRUD methods
      */
     public function getProductLinkAction()
     {
@@ -231,11 +231,11 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Set's the action with the product link attribute integer CRUD methods.
      *
-     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction $productLinkAttributeIntAction The action with the product link attribute integer CRUD methods
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface $productLinkAttributeIntAction The action with the product link attribute integer CRUD methods
      *
      * @return void
      */
-    public function setProductLinkAttributeIntAction($productLinkAttributeIntAction)
+    public function setProductLinkAttributeIntAction(ProductLinkAttributeIntActionInterface $productLinkAttributeIntAction)
     {
         $this->productLinkAttributeIntAction = $productLinkAttributeIntAction;
     }
@@ -243,7 +243,7 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     /**
      * Return's the action with the product link attribute integer CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction The action with the product link attribute integer CRUD methods
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface The action with the product link attribute integer CRUD methods
      */
     public function getProductLinkAttributeIntAction()
     {

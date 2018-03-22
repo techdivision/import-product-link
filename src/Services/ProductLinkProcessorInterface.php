@@ -23,7 +23,7 @@ namespace TechDivision\Import\Product\Link\Services;
 use TechDivision\Import\Product\Services\ProductProcessorInterface;
 
 /**
- * A SLSB providing methods to load product data using a PDO connection.
+ * Interface for product link processor implementations.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -37,28 +37,28 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
     /**
      * Return's the repository to load product links.
      *
-     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkRepository The repository instance
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkRepositoryInterface The repository instance
      */
     public function getProductLinkRepository();
 
     /**
      * Return's the repository to load product link attribute integer attributes.
      *
-     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepository The repository instance
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepositoryInterface The repository instance
      */
     public function getProductLinkAttributeIntRepository();
 
     /**
      * Return's the action with the product link CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAction The action with the product link CRUD methods
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface The action with the product link CRUD methods
      */
     public function getProductLinkAction();
 
     /**
      * Return's the action with the product link attribute integer CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntAction The action with the product link attribute integer CRUD methods
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface The action with the product link attribute integer CRUD methods
      */
     public function getProductLinkAttributeIntAction();
 

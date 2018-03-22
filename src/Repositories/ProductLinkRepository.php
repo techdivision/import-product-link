@@ -33,7 +33,7 @@ use TechDivision\Import\Repositories\AbstractRepository;
  * @link      https://github.com/techdivision/import-product-link
  * @link      http://www.techdivision.com
  */
-class ProductLinkRepository extends AbstractRepository
+class ProductLinkRepository extends AbstractRepository implements ProductLinkRepositoryInterface
 {
 
     /**
