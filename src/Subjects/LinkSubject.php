@@ -21,10 +21,8 @@
 namespace TechDivision\Import\Product\Link\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException;
-use TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException;
 
 /**
  * A subject implementation the process to import product links.
@@ -44,20 +42,6 @@ class LinkSubject extends AbstractProductSubject
      * @var integer
      */
     protected $lastLinkId;
-
-    /**
-     * The available link types.
-     *
-     * @var array
-     */
-    protected $linkTypes = array();
-
-    /**
-     * The available link attributes.
-     *
-     * @var array
-     */
-    protected $linkAttributes = array();
 
     /**
      * The mapping for the SKUs to the created entity IDs.
@@ -87,10 +71,6 @@ class LinkSubject extends AbstractProductSubject
 
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
-
-        // load the link types/attributes we've initialized before
-        $this->linkTypes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::LINK_TYPES];
-        $this->linkAttributes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::LINK_ATTRIBUTES];
     }
 
     /**
@@ -137,51 +117,5 @@ class LinkSubject extends AbstractProductSubject
                 sprintf('Found not mapped entity ID for SKU %s', $sku)
             )
         );
-    }
-
-    /**
-     * Return's the link type ID for the passed link type code.
-     *
-     * @param string $linkTypeCode The link type code to return the link type ID for
-     *
-     * @return integer The mapped link type ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
-     */
-    public function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
-    {
-
-        // query weather or not the link type code has been mapped
-        if (isset($this->linkTypes[$linkTypeCode])) {
-            return $this->linkTypes[$linkTypeCode][MemberNames::LINK_TYPE_ID];
-        }
-
-        // throw an exception if the link type code has not been mapped yet
-        throw new MapLinkTypeCodeToIdException(
-            $this->appendExceptionSuffix(
-                sprintf('Found not mapped link type code %s', $linkTypeCode)
-            )
-        );
-    }
-
-    /**
-     * Return's the link attribute for the passed link type ID and attribute code.
-     *
-     * @param integer $linkTypeId    The link type
-     * @param string  $attributeCode The attribute code
-     *
-     * @return array The link attribute
-     */
-    public function getProductLinkAttribute($linkTypeId, $attributeCode)
-    {
-
-        // try to load the link attribute with the passed link type ID and attribute code
-        foreach ($this->linkAttributes as $linkAttribute) {
-            if ($linkAttribute[MemberNames::LINK_TYPE_ID] === $linkTypeId &&
-                $linkAttribute[MemberNames::PRODUCT_LINK_ATTRIBUTE_CODE] === $attributeCode
-            ) {
-                // return the matching link attribute
-                return $linkAttribute;
-            }
-        }
     }
 }

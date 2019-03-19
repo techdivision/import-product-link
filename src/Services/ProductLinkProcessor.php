@@ -25,6 +25,10 @@ use TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface;
 use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface;
 use TechDivision\Import\Product\Link\Repositories\ProductLinkRepositoryInterface;
 use TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeIntRepositoryInterface;
+use TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeDecimalRepositoryInterface;
+use TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeVarcharRepositoryInterface;
+use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalActionInterface;
+use TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharActionInterface;
 
 /**
  * The product link processor implementation.
@@ -60,6 +64,20 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     protected $productLinkAttributeIntRepository;
 
     /**
+     * The repository to load product link attribute decimal attributes.
+     *
+     * @var \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeDecimalRepositoryInterface
+     */
+    protected $productLinkAttributeDecimalRepository;
+
+    /**
+     * The repository to load product link attribute varchar attributes.
+     *
+     * @var \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeVarcharRepositoryInterface
+     */
+    protected $productLinkAttributeVarcharRepository;
+
+    /**
      * The action with the product link CRUD methods.
      *
      * @var \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface
@@ -74,26 +92,52 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     protected $productLinkAttributeIntAction;
 
     /**
+     * The action with the product link attribute deciam CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalActionInterface
+     */
+    protected $productLinkAttributeDecimalAction;
+
+    /**
+     * The action with the product link attribute varchar CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharActionInterface
+     */
+    protected $productLinkAttributeVarcharAction;
+
+    /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
-     * @param \TechDivision\Import\Connection\ConnectionInterface                                        $connection                        The connection to use
-     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepositoryInterface             $productLinkRepository             The product link repository to use
-     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepositoryInterface $productLinkAttributeIntRepository The product link attribute integer repository to use
-     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface                       $productLinkAction                 The product link action to use
-     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface           $productLinkAttributeIntAction     The product link attribute integer action to use
+     * @param \TechDivision\Import\Connection\ConnectionInterface                                            $connection                            The connection to use
+     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkRepositoryInterface                 $productLinkRepository                 The product link repository to use
+     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeIntRepositoryInterface     $productLinkAttributeIntRepository     The product link attribute integer repository to use
+     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeDecimalRepositoryInterface $productLinkAttributeDecimalRepository The product link attribute decimal repository to use
+     * @param \TechDivision\Import\Product\Link\Repositories\\ProductLinkAttributeVarcharRepositoryInterface $productLinkAttributeVarcharRepository The product link attribute varchar repository to use
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface                           $productLinkAction                     The product link action to use
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeIntActionInterface               $productLinkAttributeIntAction         The product link attribute integer action to use
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalActionInterface           $productLinkAttributeDecimalAction     The product link attribute decimal action to use
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharActionInterface           $productLinkAttributeVarcharAction     The product link attribute varchar action to use
      */
     public function __construct(
         ConnectionInterface $connection,
         ProductLinkRepositoryInterface $productLinkRepository,
         ProductLinkAttributeIntRepositoryInterface $productLinkAttributeIntRepository,
+        ProductLinkAttributeDecimalRepositoryInterface $productLinkAttributeDecimalRepository,
+        ProductLinkAttributeVarcharRepositoryInterface $productLinkAttributeVarcharRepository,
         ProductLinkActionInterface $productLinkAction,
-        ProductLinkAttributeIntActionInterface $productLinkAttributeIntAction
+        ProductLinkAttributeIntActionInterface $productLinkAttributeIntAction,
+        ProductLinkAttributeDecimalActionInterface $productLinkAttributeDecimalAction,
+        ProductLinkAttributeVarcharActionInterface $productLinkAttributeVarcharAction
     ) {
         $this->setConnection($connection);
         $this->setProductLinkRepository($productLinkRepository);
         $this->setProductLinkAttributeIntRepository($productLinkAttributeIntRepository);
+        $this->setProductLinkAttributeDecimalRepository($productLinkAttributeDecimalRepository);
+        $this->setProductLinkAttributeVarcharRepository($productLinkAttributeVarcharRepository);
         $this->setProductLinkAction($productLinkAction);
         $this->setProductLinkAttributeIntAction($productLinkAttributeIntAction);
+        $this->setProductLinkAttributeDecimalAction($productLinkAttributeDecimalAction);
+        $this->setProductLinkAttributeVarcharAction($productLinkAttributeVarcharAction);
     }
 
     /**
@@ -207,6 +251,50 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     }
 
     /**
+     * Set's the repository to load product link attribute decimal attributes.
+     *
+     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeDecimalRepositoryInterface $productLinkAttributeDecimalRepository The repository instance
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeDecimalRepository(ProductLinkAttributeDecimalRepositoryInterface $productLinkAttributeDecimalRepository)
+    {
+        $this->productLinkAttributeDecimalRepository = $productLinkAttributeDecimalRepository;
+    }
+
+    /**
+     * Return's the repository to load product link attribute decimal attributes.
+     *
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeDecimalRepositoryInterface The repository instance
+     */
+    public function getProductLinkAttributeDecimalRepository()
+    {
+        return $this->productLinkAttributeDecimalRepository;
+    }
+
+    /**
+     * Set's the repository to load product link attribute varchar attributes.
+     *
+     * @param \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeVarcharRepositoryInterface $productLinkAttributeVarcharRepository The repository instance
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeVarcharRepository(ProductLinkAttributeVarcharRepositoryInterface $productLinkAttributeVarcharRepository)
+    {
+        $this->productLinkAttributeVarcharRepository = $productLinkAttributeVarcharRepository;
+    }
+
+    /**
+     * Return's the repository to load product link attribute varchar attributes.
+     *
+     * @return \TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeVarcharRepositoryInterface The repository instance
+     */
+    public function getProductLinkAttributeVarcharRepository()
+    {
+        return $this->productLinkAttributeVarcharRepository;
+    }
+
+    /**
      * Set's the action with the product link CRUD methods.
      *
      * @param \TechDivision\Import\Product\Link\Actions\ProductLinkActionInterface $productLinkAction The action with the product link CRUD methods
@@ -251,6 +339,50 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     }
 
     /**
+     * Set's the action with the product link attribute decimal CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalActionInterface $productLinkAttributeDecimalAction The action with the product link attribute decimal CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeDecimalAction(ProductLinkAttributeDecimalActionInterface $productLinkAttributeDecimalAction)
+    {
+        $this->productLinkAttributeDecimalAction = $productLinkAttributeDecimalAction;
+    }
+
+    /**
+     * Return's the action with the product link attribute decimal CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalActionInterface The action with the product link attribute decimal CRUD methods
+     */
+    public function getProductLinkAttributeDecimalAction()
+    {
+        return $this->productLinkAttributeDecimalAction;
+    }
+
+    /**
+     * Set's the action with the product link attribute varchar CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharActionInterface $productLinkAttributeVarcharAction The action with the product link attribute varchar CRUD methods
+     *
+     * @return void
+     */
+    public function setProductLinkAttributeVarcharAction(ProductLinkAttributeVarcharActionInterface $productLinkAttributeVarcharAction)
+    {
+        $this->productLinkAttributeVarcharAction = $productLinkAttributeVarcharAction;
+    }
+
+    /**
+     * Return's the action with the product link attribute varchar CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharActionInterface The action with the product link attribute varchar CRUD methods
+     */
+    public function getProductLinkAttributeVarcharAction()
+    {
+        return $this->productLinkAttributeVarcharAction;
+    }
+
+    /**
      * Load's the link with the passed product/linked product/link type ID.
      *
      * @param integer $productId       The product ID of the link to load
@@ -278,6 +410,32 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
     }
 
     /**
+     * Return's the product link attribute decimal value with the passed product link attribute/link ID.
+     *
+     * @param integer $productLinkAttributeId The product link attribute ID of the attributes
+     * @param integer $linkId                 The link ID of the attribute
+     *
+     * @return array The product link attribute decimal value
+     */
+    public function loadProductLinkAttributeDecimal($productLinkAttributeId, $linkId)
+    {
+        return $this->getProductLinkAttributeDecimalRepository()->findOneByProductLinkAttributeIdAndLinkId($productLinkAttributeId, $linkId);
+    }
+
+    /**
+     * Return's the product link attribute varchar value with the passed product link attribute/link ID.
+     *
+     * @param integer $productLinkAttributeId The product link attribute ID of the attributes
+     * @param integer $linkId                 The link ID of the attribute
+     *
+     * @return array The product link attribute varchar value
+     */
+    public function loadProductLinkAttributeVarchar($productLinkAttributeId, $linkId)
+    {
+        return $this->getProductLinkAttributeVarcharRepository()->findOneByProductLinkAttributeIdAndLinkId($productLinkAttributeId, $linkId);
+    }
+
+    /**
      * Persist's the passed product link data and return's the ID.
      *
      * @param array $productLink The product link data to persist
@@ -294,10 +452,34 @@ class ProductLinkProcessor implements ProductLinkProcessorInterface
      *
      * @param array $productLinkAttributeInt The product link attribute integer data to persist
      *
-     * @return string The ID of the persisted entity
+     * @return void
      */
     public function persistProductLinkAttributeInt($productLinkAttributeInt)
     {
         $this->getProductLinkAttributeIntAction()->persist($productLinkAttributeInt);
+    }
+
+    /**
+     * Persist's the passed product link attribute decimal data.
+     *
+     * @param array $productLinkAttributeDecimal The product link attribute decimal data to persist
+     *
+     * @return void
+     */
+    public function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
+    {
+        $this->getProductLinkAttributeDecimalAction()->persist($productLinkAttributeDecimal);
+    }
+
+    /**
+     * Persist's the passed product link attribute varchar data.
+     *
+     * @param array $productLinkAttributeVarchar The product link attribute varchar data to persist
+     *
+     * @return void
+     */
+    public function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
+    {
+        $this->getProductLinkAttributeVarcharAction()->persist($productLinkAttributeVarchar);
     }
 }

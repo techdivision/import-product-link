@@ -21,7 +21,6 @@
 namespace TechDivision\Import\Product\Link\Observers;
 
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
-use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
@@ -54,8 +53,11 @@ class ProductLinkObserver extends AbstractProductImportObserver
         // initialize the array for the links
         $artefacts = array();
 
+        // load the link type mappings
+        $linkTypes = $this->getLinkTypeMappings();
+
         // prepare the links for the found link types and merge the found artefacts
-        foreach ($this->getLinkTypeMappings() as $linkTypeCode => $columns) {
+        foreach ($linkTypes as $linkTypeCode => $columns) {
             $artefacts = array_merge($artefacts, $this->prepareArtefacts($linkTypeCode, $columns));
         }
 
@@ -77,53 +79,55 @@ class ProductLinkObserver extends AbstractProductImportObserver
         // initialize the array for the product media
         $artefacts = array();
 
-        // extract the column names
-        list ($columnNameSku, $columnNamePosition) = $columns;
+        // load the parent SKU from the row
+        $parentSku = $this->getValue(ColumnKeys::SKU);
+
+        // shift the column with the header information from the stack
+        list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
 
         // query whether or not, we've up sell products
-        if ($links = $this->getValue($columnNameSku, null, array($this, 'explode'))) {
-            // load the parent SKU from the row
-            $parentSku = $this->getValue(ColumnKeys::SKU);
-            // extract the link positions, if available
-            $linkPositions = $this->getValue($columnNamePosition, array(), array($this, 'explode'));
+        if ($links = $this->getValue($columnNameChildSkus, null, $callbackChildSkus)) {
+            // intialize the array for the link attributes
+            $linkAttributeValues = array();
+            // iterate over the colums to prepare all link type attribute values
+            foreach ($columns as $column) {
+                // extract the column names and their callbacks
+                list ($columnNameLinkTypeAttributeValue, $callbackLinkAttribute, $linkTypeAttributeCode) = $column;
 
-            // load the SKUs of the related products
-            foreach ($links as $key => $childSku) {
-                // prepare the link position
-                $linkPosition = $key + 1;
-                if (isset($linkPositions[$key]) && !empty($linkPositions[$key])) {
-                    $linkPosition = $linkPositions[$key];
+                // explode the link type attributes
+                $linkAttributeValues = $this->getValue($columnNameLinkTypeAttributeValue, array(), $callbackLinkAttribute);
+
+                // load the SKUs of the related products
+                foreach ($links as $key => $childSku) {
+                    // prepare the link type attribute value
+                    $linkTypeAttributeValue = $key + 1;
+                    if (isset($linkAttributeValues[$key]) && !empty($linkAttributeValues[$key])) {
+                        $linkTypeAttributeValue = $linkAttributeValues[$key];
+                    }
+
+                    // prepare and append the relation to the artefacts
+                    $artefacts[] = $this->newArtefact(
+                        array(
+                            ColumnKeys::LINK_PARENT_SKU           => $parentSku,
+                            ColumnKeys::LINK_CHILD_SKU            => $childSku,
+                            ColumnKeys::LINK_TYPE_CODE            => $linkTypeCode,
+                            ColumnKeys::LINK_TYPE_ATTRIBUTE_CODE  => $linkTypeAttributeCode,
+                            ColumnKeys::LINK_TYPE_ATTRIBUTE_VALUE => $linkTypeAttributeValue
+                        ),
+                        array(
+                            ColumnKeys::LINK_PARENT_SKU           => ColumnKeys::SKU,
+                            ColumnKeys::LINK_CHILD_SKU            => $columnNameChildSkus,
+                            ColumnKeys::LINK_TYPE_CODE            => $columnNameChildSkus,
+                            ColumnKeys::LINK_TYPE_ATTRIBUTE_CODE  => $columnNameLinkTypeAttributeValue,
+                            ColumnKeys::LINK_TYPE_ATTRIBUTE_VALUE => $columnNameLinkTypeAttributeValue
+                        )
+                    );
                 }
-
-                // prepare and append the relation to the artefacts
-                $artefacts[] = $this->newArtefact(
-                    array(
-                        ColumnKeys::LINK_PARENT_SKU => $parentSku,
-                        ColumnKeys::LINK_CHILD_SKU  => $childSku,
-                        ColumnKeys::LINK_TYPE_CODE  => $linkTypeCode,
-                        ColumnKeys::LINK_POSITION   => $linkPosition
-                    ),
-                    array(
-                        ColumnKeys::LINK_PARENT_SKU => ColumnKeys::SKU,
-                        ColumnKeys::LINK_CHILD_SKU  => $columnNameSku,
-                        ColumnKeys::LINK_POSITION   => $columnNamePosition
-                    )
-                );
             }
         }
 
         // return the artefacts
         return $artefacts;
-    }
-
-    /**
-     * Return's the available link types.
-     *
-     * @return array The link types
-     */
-    protected function getLinkTypes()
-    {
-        return $this->getSubject()->getLinkTypes();
     }
 
     /**
@@ -133,20 +137,7 @@ class ProductLinkObserver extends AbstractProductImportObserver
      */
     protected function getLinkTypeMappings()
     {
-
-        // initialize the array with link type mappings
-        $linkTypeMappings = array();
-
-        // prepare the link type mappings
-        foreach ($this->getLinkTypes() as $linkType) {
-            $linkTypeMappings[$linkType[MemberNames::CODE]] = array(
-                sprintf('%s_skus', $linkType[MemberNames::CODE]),
-                sprintf('%s_position', $linkType[MemberNames::CODE]),
-            );
-        }
-
-        // return the link type mappings
-        return $linkTypeMappings;
+        return $this->getSubject()->getLinkTypeMappings();
     }
 
     /**

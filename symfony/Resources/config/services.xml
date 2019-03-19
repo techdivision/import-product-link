@@ -14,6 +14,14 @@
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
+        <service id="import_product_link.repository.product.link.attribute.decimal" class="TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeDecimalRepository">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
+        <service id="import_product_link.repository.product.link.attribute.varchar" class="TechDivision\Import\Product\Link\Repositories\ProductLinkAttributeVarcharRepository">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
 
         <service id="import_product_link.action.processor.product.link.create" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkCreateProcessor">
             <argument type="service" id="connection"/>
@@ -31,6 +39,22 @@
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
+        <service id="import_product_link.action.processor.product.link.attribute.decimal.create" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeDecimalCreateProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
+        <service id="import_product_link.action.processor.product.link.attribute.decimal.update" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeDecimalUpdateProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
+        <service id="import_product_link.action.processor.product.link.attribute.varchar.create" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeVarcharCreateProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
+        <service id="import_product_link.action.processor.product.link.attribute.varchar.update" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeVarcharUpdateProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
 
         <service id="import_product_link.action.product.link" class="TechDivision\Import\Product\Link\Actions\ProductLinkAction">
             <argument type="service" id="import_product_link.action.processor.product.link.create"/>
@@ -40,13 +64,25 @@
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.int.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.int.update"/>
         </service>
+        <service id="import_product_link.action.product.link.attribute.decimal" class="TechDivision\Import\Product\Link\Actions\ProductLinkAttributeDecimalAction">
+            <argument type="service" id="import_product_link.action.processor.product.link.attribute.decimal.create"/>
+            <argument type="service" id="import_product_link.action.processor.product.link.attribute.decimal.update"/>
+        </service>
+        <service id="import_product_link.action.product.link.attribute.varchar" class="TechDivision\Import\Product\Link\Actions\ProductLinkAttributeVarcharAction">
+            <argument type="service" id="import_product_link.action.processor.product.link.attribute.varchar.create"/>
+            <argument type="service" id="import_product_link.action.processor.product.link.attribute.varchar.update"/>
+        </service>
 
         <service id="import_product_link.processor.product.link" class="TechDivision\Import\Product\Link\Services\ProductLinkProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_link.repository.product.link"/>
             <argument type="service" id="import_product_link.repository.product.link.attribute.int"/>
+            <argument type="service" id="import_product_link.repository.product.link.attribute.decimal"/>
+            <argument type="service" id="import_product_link.repository.product.link.attribute.varchar"/>
             <argument type="service" id="import_product_link.action.product.link"/>
             <argument type="service" id="import_product_link.action.product.link.attribute.int"/>
+            <argument type="service" id="import_product_link.action.product.link.attribute.decimal"/>
+            <argument type="service" id="import_product_link.action.product.link.attribute.varchar"/>
         </service>
 
         <service id="import_product_link.observer.product.link" class="TechDivision\Import\Product\Link\Observers\ProductLinkObserver"/>

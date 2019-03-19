@@ -47,6 +47,20 @@ class SqlStatementKeys extends \TechDivision\Import\Product\Utils\SqlStatementKe
     const PRODUCT_LINK_ATTRIBUTE_INT = 'product_link_attribute_int';
 
     /**
+     * The SQL statement to load an existing product link attribute decimal value by the passed product link attribute ID/link ID/value.
+     *
+     * @var string
+     */
+    const PRODUCT_LINK_ATTRIBUTE_DECIMAL = 'product_link_attribute_decimal';
+
+    /**
+     * The SQL statement to load an existing product link attribute varchar value by the passed product link attribute ID/link ID/value.
+     *
+     * @var string
+     */
+    const PRODUCT_LINK_ATTRIBUTE_VARCHAR = 'product_link_attribute_varchar';
+
+    /**
      * The SQL statement to create a new product link.
      *
      * @var string
@@ -73,4 +87,32 @@ class SqlStatementKeys extends \TechDivision\Import\Product\Utils\SqlStatementKe
      * @var string
      */
     const UPDATE_PRODUCT_LINK_ATTRIBUTE_INT = 'update.product_link_attribute_int';
+
+    /**
+     * The SQL statement to create a new product link attribute decimal value.
+     *
+     * @var string
+     */
+    const CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL = 'insert:product_link_attribute_decimal';
+
+    /**
+     * The SQL statement to update an existing product link attribute decimal value.
+     *
+     * @var string
+     */
+    const UPDATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL = 'update.product_link_attribute_decimal';
+
+    /**
+     * The SQL statement to create a new product link attribute varchar value.
+     *
+     * @var string
+     */
+    const CREATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR = 'insert:product_link_attribute_varchar';
+
+    /**
+     * The SQL statement to update an existing product link attribute varchar value.
+     *
+     * @var string
+     */
+    const UPDATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR = 'update.product_link_attribute_varchar';
 }

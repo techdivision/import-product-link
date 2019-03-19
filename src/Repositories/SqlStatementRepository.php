@@ -51,6 +51,16 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
                FROM catalog_product_link_attribute_int
               WHERE product_link_attribute_id = :product_link_attribute_id
                 AND link_id = :link_id',
+        SqlStatementKeys::PRODUCT_LINK_ATTRIBUTE_DECIMAL =>
+            'SELECT *
+               FROM catalog_product_link_attribute_decimal
+              WHERE product_link_attribute_id = :product_link_attribute_id
+                AND link_id = :link_id',
+        SqlStatementKeys::PRODUCT_LINK_ATTRIBUTE_VARCHAR =>
+            'SELECT *
+               FROM catalog_product_link_attribute_varchar
+              WHERE product_link_attribute_id = :product_link_attribute_id
+                AND link_id = :link_id',
         SqlStatementKeys::CREATE_PRODUCT_LINK =>
             'INSERT
                INTO catalog_product_link
@@ -77,6 +87,36 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
                      :value)',
         SqlStatementKeys::UPDATE_PRODUCT_LINK_ATTRIBUTE_INT =>
             'UPDATE catalog_product_link_attribute_int
+                SET product_link_attribute_id = :product_link_attribute_id,
+                    link_id = :link_id,
+                    value = :value
+              WHERE value_id = :value_id',
+        SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL =>
+            'INSERT
+               INTO catalog_product_link_attribute_decimal
+                    (product_link_attribute_id,
+                     link_id,
+                     value)
+             VALUES (:product_link_attribute_id,
+                     :link_id,
+                     :value)',
+        SqlStatementKeys::UPDATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL =>
+            'UPDATE catalog_product_link_attribute_decimal
+                SET product_link_attribute_id = :product_link_attribute_id,
+                    link_id = :link_id,
+                    value = :value
+              WHERE value_id = :value_id',
+        SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR =>
+            'INSERT
+               INTO catalog_product_link_attribute_varchar
+                    (product_link_attribute_id,
+                     link_id,
+                     value)
+             VALUES (:product_link_attribute_id,
+                     :link_id,
+                     :value)',
+        SqlStatementKeys::UPDATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR =>
+            'UPDATE catalog_product_link_attribute_varchar
                 SET product_link_attribute_id = :product_link_attribute_id,
                     link_id = :link_id,
                     value = :value

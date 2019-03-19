@@ -54,11 +54,18 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
     const LINK_TYPE_CODE = 'link_type_code';
 
     /**
-     * Name for the column 'link_position'.
+     * Name for the column 'link_type_attribute_code'.
      *
      * @var string
      */
-    const LINK_POSITION = 'link_position';
+    const LINK_TYPE_ATTRIBUTE_CODE = 'link_type_attribute_code';
+
+    /**
+     * Name for the column 'link_type_attribute_value'.
+     *
+     * @var string
+     */
+    const LINK_TYPE_ATTRIBUTE_VALUE = 'link_type_attribute_value';
 
     /**
      * Name for the column 'related_skus'.
