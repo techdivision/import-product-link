@@ -138,7 +138,33 @@ class LinkObserver extends AbstractProductImportObserver
      */
     protected function initializeProductLink(array $attr)
     {
+
+        // load the product/linked product/link type ID
+        $productId = $attr[MemberNames::PRODUCT_ID];
+        $linkTypeId = $attr[MemberNames::LINK_TYPE_ID];
+        $linkedProductId = $attr[MemberNames::LINKED_PRODUCT_ID];
+
+        // try to load the link with the passed product/linked product/link type ID
+        if ($entity = $this->loadProductLink($productId, $linkedProductId, $linkTypeId)) {
+            return $this->mergeEntity($entity, $attr);
+        }
+
+        // simply return the attributes
         return $attr;
+    }
+
+    /**
+     * Load's the link with the passed product/linked product/link type ID.
+     *
+     * @param integer $productId       The product ID of the link to load
+     * @param integer $linkedProductId The linked product ID of the link to load
+     * @param integer $linkTypeId      The link type ID of the product to load
+     *
+     * @return array The link
+     */
+    protected function loadProductLink($productId, $linkedProductId, $linkTypeId)
+    {
+        return $this->getProductLinkProcessor()->loadProductLink($productId, $linkedProductId, $linkTypeId);
     }
 
     /**

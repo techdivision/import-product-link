@@ -1,3 +1,13 @@
+# Version 8.0.0
+
+## Bugfixes
+
+* Fixed invalid replace mode for product links and grouped products
+
+## Features
+
+* None
+
 # Version 7.0.0
 
 ## Bugfixes
