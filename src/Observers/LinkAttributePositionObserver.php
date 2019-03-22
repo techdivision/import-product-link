@@ -87,7 +87,6 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
     {
 
         // process the link type attributes
-
         $productLinkAttribute = $this->getProductLinkAttributeByLinkTypeCodeAndAttributeCode($this->getValue(ColumnKeys::LINK_TYPE_CODE), $this->getValue(ColumnKeys::LINK_TYPE_ATTRIBUTE_CODE));
 
         // try to load the product link attribute
