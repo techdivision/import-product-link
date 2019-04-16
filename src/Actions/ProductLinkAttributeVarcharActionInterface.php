@@ -25,11 +25,12 @@ use TechDivision\Import\Actions\ActionInterface;
 /**
  * Interface for action implementations that provides CRUD functionality for product varchar integer attributes.
  *
- * @author    Tim Wagner <t.wagner@techdivision.com>
- * @copyright 2019 TechDivision GmbH <info@techdivision.com>
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      https://github.com/techdivision/import-product-link
- * @link      http://www.techdivision.com
+ * @author     Tim Wagner <t.wagner@techdivision.com>
+ * @copyright  2019 TechDivision GmbH <info@techdivision.com>
+ * @license    http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link       https://github.com/techdivision/import-product-link
+ * @link       http://www.techdivision.com
+ * @deprecated Since version 9.0.0
  */
 interface ProductLinkAttributeVarcharActionInterface extends ActionInterface
 {

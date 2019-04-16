@@ -1,3 +1,14 @@
+# Version 9.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 8.0.* version as dependency
+* Make Actions and ActionInterfaces deprecated, replace DI configuration with GenericAction + GenericIdentifierAction
+
 # Version 8.0.0
 
 ## Bugfixes
