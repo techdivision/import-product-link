@@ -3,6 +3,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+        <parameter key="import_product_link.param.sku.column.name" type="constant">TechDivision\Import\Product\Link\Utils\ColumnKeys::LINK_CHILD_SKU</parameter>
+    </parameters>
+
     <services>
 
         <service id="import_product_link.repository.sql.statement" class="TechDivision\Import\Product\Link\Repositories\SqlStatementRepository"/>
@@ -97,6 +101,37 @@
         </service>
         <service id="import_product_link.observer.link.update" class="TechDivision\Import\Product\Link\Observers\LinkUpdateObserver">
             <argument type="service" id="import_product_link.processor.product.link"/>
+        </service>
+        <service id="import_product_link.observer.sku.entity.id.mapping" class="TechDivision\Import\Product\Observers\GenericSkuEntityIdMappingObserver">
+            <argument type="service" id="import_product.processor.product.bunch"/>
+            <argument type="string">%import_product_link.param.sku.column.name%</argument>
+        </service>
+
+        <!--
+         | The DI configuration for the composite observers of the replace operation.
+         |-->
+        <service id="import_product_link.observer.composite.replace" class="TechDivision\Import\Observers\GenericCompositeObserver">
+            <call method="addObserver">
+                <argument id="import_product_link.observer.link" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_link.observer.link.attribute.position" type="service"/>
+            </call>
+        </service>
+
+        <!--
+         | The DI configuration for the composite observers of the add-update operation.
+         |-->
+        <service id="import_product_link.observer.composite.add_update" class="TechDivision\Import\Observers\GenericCompositeObserver">
+            <call method="addObserver">
+                <argument id="import_product_link.observer.sku.entity.id.mapping" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_link.observer.link" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_link.observer.link.attribute.position.update" type="service"/>
+            </call>
         </service>
 
         <service id="import_product_link.subject.link" class="TechDivision\Import\Product\Link\Subjects\LinkSubject" shared="false">

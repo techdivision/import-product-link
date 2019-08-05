@@ -22,7 +22,6 @@ namespace TechDivision\Import\Product\Link\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
-use TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException;
 
 /**
  * A subject implementation the process to import product links.
@@ -44,13 +43,6 @@ class LinkSubject extends AbstractProductSubject
     protected $lastLinkId;
 
     /**
-     * The mapping for the SKUs to the created entity IDs.
-     *
-     * @var array
-     */
-    protected $skuEntityIdMapping = array();
-
-    /**
      * Intializes the previously loaded global data for exactly one variants.
      *
      * @param string $serial The serial of the actual import
@@ -69,7 +61,7 @@ class LinkSubject extends AbstractProductSubject
         // load the status of the actual import process
         $status = $registryProcessor->getAttribute(RegistryKeys::STATUS);
 
-        // load the attribute set we've prepared intially
+        // load the SKU => entity ID mapping
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
     }
 
@@ -93,29 +85,5 @@ class LinkSubject extends AbstractProductSubject
     public function getLastLinkId()
     {
         return $this->lastLinkId;
-    }
-
-    /**
-     * Return the entity ID for the passed SKU.
-     *
-     * @param string $sku The SKU to return the entity ID for
-     *
-     * @return integer The mapped entity ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
-     */
-    public function mapSkuToEntityId($sku)
-    {
-
-        // query weather or not the SKU has been mapped
-        if (isset($this->skuEntityIdMapping[$sku])) {
-            return $this->skuEntityIdMapping[$sku];
-        }
-
-        // throw an exception if the SKU has not been mapped yet
-        throw new MapSkuToEntityIdException(
-            $this->appendExceptionSuffix(
-                sprintf('Found not mapped entity ID for SKU %s', $sku)
-            )
-        );
     }
 }

@@ -1,3 +1,14 @@
+# Version 15.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Move LinkSubject::mapSkuToEntityId() method to AbstractProductSubject
+* Switch to latest techdivision/import-product 15.* version as dependency
+
 # Version 14.0.0
 
 ## Bugfixes

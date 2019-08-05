@@ -223,7 +223,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $linkTypeCode The link type code to return the link type ID for
      *
      * @return integer The mapped link type ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
+     * @throws \TechDivision\Import\Product\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
      */
     protected function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
     {
