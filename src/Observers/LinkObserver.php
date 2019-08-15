@@ -197,7 +197,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     protected function mapSkuToEntityId($sku)
     {
@@ -210,7 +210,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     protected function mapSku($sku)
     {
