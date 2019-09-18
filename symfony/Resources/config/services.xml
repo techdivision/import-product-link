@@ -9,7 +9,9 @@
 
     <services>
 
-        <service id="import_product_link.repository.sql.statement" class="TechDivision\Import\Product\Link\Repositories\SqlStatementRepository"/>
+        <service id="import_product_link.repository.sql.statement" class="TechDivision\Import\Product\Link\Repositories\SqlStatementRepository">
+            <argument type="service" id="import.util.sql.compilers"/>
+        </service>
         <service id="import_product_link.repository.product.link" class="TechDivision\Import\Product\Link\Repositories\ProductLinkRepository">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_link.repository.sql.statement"/>
