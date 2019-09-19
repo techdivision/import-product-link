@@ -101,9 +101,6 @@
         <service id="import_product_link.observer.link" class="TechDivision\Import\Product\Link\Observers\LinkObserver">
             <argument type="service" id="import_product_link.processor.product.link"/>
         </service>
-        <service id="import_product_link.observer.link.update" class="TechDivision\Import\Product\Link\Observers\LinkUpdateObserver">
-            <argument type="service" id="import_product_link.processor.product.link"/>
-        </service>
         <service id="import_product_link.observer.sku.entity.id.mapping" class="TechDivision\Import\Product\Observers\GenericSkuEntityIdMappingObserver">
             <argument type="service" id="import_product.processor.product.bunch"/>
             <argument type="string">%import_product_link.param.sku.column.name%</argument>
