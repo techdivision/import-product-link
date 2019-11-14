@@ -65,6 +65,8 @@
         <service id="import_product_link.action.product.link" class="TechDivision\Import\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_link.action.processor.product.link.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.update"/>
+            <argument type="service" id="import_product_link.action.processor.product.link.delete" on-invalid="ignore"/>
+            <argument type="constant">TechDivision\Import\Product\Link\Utils\MemberNames::LINK_ID</argument>
         </service>
         <service id="import_product_link.action.product.link.attribute.int" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.int.create"/>
