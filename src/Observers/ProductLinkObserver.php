@@ -101,7 +101,7 @@ class ProductLinkObserver extends AbstractProductImportObserver
                 foreach ($links as $key => $childSku) {
                     // prepare the link type attribute value
                     $linkTypeAttributeValue = $key + 1;
-                    if (isset($linkAttributeValues[$key]) && !empty($linkAttributeValues[$key])) {
+                    if (isset($linkAttributeValues[$key]) && $linkAttributeValues[$key] !== null && $linkAttributeValues[$key] !== '') {
                         $linkTypeAttributeValue = $linkAttributeValues[$key];
                     }
 
