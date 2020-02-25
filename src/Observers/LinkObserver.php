@@ -91,32 +91,25 @@ class LinkObserver extends AbstractProductImportObserver
     {
 
         try {
-            // extract the parent ID from the row
-            $parentId = $this->mapSku($this->getValue(ColumnKeys::LINK_PARENT_SKU));
-        } catch (\Exception $e) {
-            throw $this->wrapException(array(ColumnKeys::LINK_PARENT_SKU), $e);
-        }
-
-        try {
-            // extract the child ID from the row
-            $childId = $this->mapSkuToEntityId($this->getValue(ColumnKeys::LINK_CHILD_SKU));
-        } catch (\Exception $e) {
-            throw $this->wrapException(array(ColumnKeys::LINK_CHILD_SKU), $e);
-        }
-
-        try {
             // extract the link type code from the row
             $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($this->getValue(ColumnKeys::LINK_TYPE_CODE));
+            // initialize the column name
+            $columnName = ColumnKeys::LINK_PARENT_SKU;
+            // extract the parent + child ID from the row
+            $parentId = $this->mapSku($this->getValue($columnName));
+            $childId = $this->mapSkuToEntityId($this->getValue($columnName = ColumnKeys::LINK_CHILD_SKU));
         } catch (\Exception $e) {
             // query whether or not, debug mode is enabled
             if ($this->isDebugMode()) {
+                // stop processing the row
+                $this->skipRow();
                 // log a warning and return immediately
                 $this->getSystemLogger()->warning($e->getMessage());
                 return;
             }
 
             // if we're NOT in debug mode, re-throw the exception
-            throw $e;
+            throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
         }
 
         // initialize and return the entity
