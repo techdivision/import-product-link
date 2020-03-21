@@ -1,3 +1,13 @@
+# Version 19.0.3
+
+## Bugfixes
+
+* Add missing observer to pre-load entity ID for replace operation in delta update mode
+
+## Features
+
+* None
+
 # Version 19.0.2
 
 ## Bugfixes

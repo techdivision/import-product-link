@@ -113,6 +113,9 @@
          |-->
         <service id="import_product_link.observer.composite.replace" class="TechDivision\Import\Observers\GenericCompositeObserver">
             <call method="addObserver">
+                <argument id="import_product_link.observer.sku.entity.id.mapping" type="service"/>
+            </call>
+            <call method="addObserver">
                 <argument id="import_product_link.observer.link" type="service"/>
             </call>
             <call method="addObserver">
