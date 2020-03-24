@@ -6,8 +6,6 @@
  [![Build Status](https://img.shields.io/travis/techdivision/import-product-link/master.svg?style=flat-square)](http://travis-ci.org/techdivision/import-product-link)
  [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/techdivision/import-product-link/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/techdivision/import-product-link/?branch=master) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/techdivision/import-product-link/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/techdivision/import-product-link/?branch=master)
 
-## Introduction
-
 This module provides the functionality to import the product links as well as the link positions, 
 defined in the CSV file. Actually Related, Upsell + Crosssell links are supported.
 
