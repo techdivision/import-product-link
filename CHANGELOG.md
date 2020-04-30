@@ -1,3 +1,13 @@
+# Version 20.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 20.* version as dependency
+
 # Version 19.0.3
 
 ## Bugfixes
