@@ -1,3 +1,13 @@
+# Version 22.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 22.* version as dependency
+
 # Version 21.0.0
 
 ## Bugfixes
