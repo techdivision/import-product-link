@@ -42,18 +42,28 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
     private $statements = array(
         SqlStatementKeys::PRODUCT_LINK =>
             'SELECT *
-               FROM catalog_product_link
+               FROM ${table:catalog_product_link}
               WHERE product_id = :product_id
                 AND linked_product_id = :linked_product_id
                 AND link_type_id = :link_type_id',
         SqlStatementKeys::PRODUCT_LINK_ATTRIBUTE_INT =>
             'SELECT *
-               FROM catalog_product_link_attribute_int
+               FROM ${table:catalog_product_link_attribute_int}
+              WHERE product_link_attribute_id = :product_link_attribute_id
+                AND link_id = :link_id',
+        SqlStatementKeys::PRODUCT_LINK_ATTRIBUTE_DECIMAL =>
+            'SELECT *
+               FROM ${table:catalog_product_link_attribute_decimal}
+              WHERE product_link_attribute_id = :product_link_attribute_id
+                AND link_id = :link_id',
+        SqlStatementKeys::PRODUCT_LINK_ATTRIBUTE_VARCHAR =>
+            'SELECT *
+               FROM ${table:catalog_product_link_attribute_varchar}
               WHERE product_link_attribute_id = :product_link_attribute_id
                 AND link_id = :link_id',
         SqlStatementKeys::CREATE_PRODUCT_LINK =>
             'INSERT
-               INTO catalog_product_link
+               INTO ${table:catalog_product_link}
                     (product_id,
                      linked_product_id,
                      link_type_id)
@@ -61,14 +71,14 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
                      :linked_product_id,
                      :link_type_id)',
         SqlStatementKeys::UPDATE_PRODUCT_LINK =>
-            'UPDATE catalog_product_link
+            'UPDATE ${table:catalog_product_link}
                 SET product_id = :product_id,
                     linked_product_id = :linked_product_id,
                     link_type_id = :link_type_id
               WHERE link_id = :link_id',
         SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_INT =>
             'INSERT
-               INTO catalog_product_link_attribute_int
+               INTO ${table:catalog_product_link_attribute_int}
                     (product_link_attribute_id,
                      link_id,
                      value)
@@ -76,7 +86,37 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
                      :link_id,
                      :value)',
         SqlStatementKeys::UPDATE_PRODUCT_LINK_ATTRIBUTE_INT =>
-            'UPDATE catalog_product_link_attribute_int
+            'UPDATE ${table:catalog_product_link_attribute_int}
+                SET product_link_attribute_id = :product_link_attribute_id,
+                    link_id = :link_id,
+                    value = :value
+              WHERE value_id = :value_id',
+        SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL =>
+            'INSERT
+               INTO ${table:catalog_product_link_attribute_decimal}
+                    (product_link_attribute_id,
+                     link_id,
+                     value)
+             VALUES (:product_link_attribute_id,
+                     :link_id,
+                     :value)',
+        SqlStatementKeys::UPDATE_PRODUCT_LINK_ATTRIBUTE_DECIMAL =>
+            'UPDATE ${table:catalog_product_link_attribute_decimal}
+                SET product_link_attribute_id = :product_link_attribute_id,
+                    link_id = :link_id,
+                    value = :value
+              WHERE value_id = :value_id',
+        SqlStatementKeys::CREATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR =>
+            'INSERT
+               INTO ${table:catalog_product_link_attribute_varchar}
+                    (product_link_attribute_id,
+                     link_id,
+                     value)
+             VALUES (:product_link_attribute_id,
+                     :link_id,
+                     :value)',
+        SqlStatementKeys::UPDATE_PRODUCT_LINK_ATTRIBUTE_VARCHAR =>
+            'UPDATE ${table:catalog_product_link_attribute_varchar}
                 SET product_link_attribute_id = :product_link_attribute_id,
                     link_id = :link_id,
                     value = :value
@@ -84,14 +124,17 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
     );
 
     /**
-     * Initialize the the SQL statements.
+     * Initializes the SQL statement repository with the primary key and table prefix utility.
+     *
+     * @param \IteratorAggregate<\TechDivision\Import\Utils\SqlCompilerInterface> $compilers The array with the compiler instances
      */
-    public function __construct()
+    public function __construct(\IteratorAggregate $compilers)
     {
 
-        // merge the class statements
-        foreach ($this->statements as $key => $statement) {
-            $this->preparedStatements[$key] = $statement;
-        }
+        // pass primary key + table prefix utility to parent instance
+        parent::__construct($compilers);
+
+        // compile the SQL statements
+        $this->compile($this->statements);
     }
 }

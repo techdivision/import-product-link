@@ -91,32 +91,25 @@ class LinkObserver extends AbstractProductImportObserver
     {
 
         try {
-            // extract the parent ID from the row
-            $parentId = $this->mapSku($this->getValue(ColumnKeys::LINK_PARENT_SKU));
-        } catch (\Exception $e) {
-            throw $this->wrapException(array(ColumnKeys::LINK_PARENT_SKU), $e);
-        }
-
-        try {
-            // extract the child ID from the row
-            $childId = $this->mapSkuToEntityId($this->getValue(ColumnKeys::LINK_CHILD_SKU));
-        } catch (\Exception $e) {
-            throw $this->wrapException(array(ColumnKeys::LINK_CHILD_SKU), $e);
-        }
-
-        try {
             // extract the link type code from the row
             $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($this->getValue(ColumnKeys::LINK_TYPE_CODE));
+            // initialize the column name
+            $columnName = ColumnKeys::LINK_PARENT_SKU;
+            // extract the parent + child ID from the row
+            $parentId = $this->mapSku($this->getValue($columnName));
+            $childId = $this->mapSkuToEntityId($this->getValue($columnName = ColumnKeys::LINK_CHILD_SKU));
         } catch (\Exception $e) {
             // query whether or not, debug mode is enabled
             if ($this->isDebugMode()) {
+                // stop processing the row
+                $this->skipRow();
                 // log a warning and return immediately
                 $this->getSystemLogger()->warning($e->getMessage());
                 return;
             }
 
             // if we're NOT in debug mode, re-throw the exception
-            throw $e;
+            throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
         }
 
         // initialize and return the entity
@@ -138,7 +131,33 @@ class LinkObserver extends AbstractProductImportObserver
      */
     protected function initializeProductLink(array $attr)
     {
+
+        // load the product/linked product/link type ID
+        $productId = $attr[MemberNames::PRODUCT_ID];
+        $linkTypeId = $attr[MemberNames::LINK_TYPE_ID];
+        $linkedProductId = $attr[MemberNames::LINKED_PRODUCT_ID];
+
+        // try to load the link with the passed product/linked product/link type ID
+        if ($entity = $this->loadProductLink($productId, $linkedProductId, $linkTypeId)) {
+            return $this->mergeEntity($entity, $attr);
+        }
+
+        // simply return the attributes
         return $attr;
+    }
+
+    /**
+     * Load's the link with the passed product/linked product/link type ID.
+     *
+     * @param integer $productId       The product ID of the link to load
+     * @param integer $linkedProductId The linked product ID of the link to load
+     * @param integer $linkTypeId      The link type ID of the product to load
+     *
+     * @return array The link
+     */
+    protected function loadProductLink($productId, $linkedProductId, $linkTypeId)
+    {
+        return $this->getProductLinkProcessor()->loadProductLink($productId, $linkedProductId, $linkTypeId);
     }
 
     /**
@@ -171,7 +190,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     protected function mapSkuToEntityId($sku)
     {
@@ -184,7 +203,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     protected function mapSku($sku)
     {
@@ -197,7 +216,7 @@ class LinkObserver extends AbstractProductImportObserver
      * @param string $linkTypeCode The link type code to return the link type ID for
      *
      * @return integer The mapped link type ID
-     * @throws \TechDivision\Import\Product\Link\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
+     * @throws \TechDivision\Import\Product\Exceptions\MapLinkTypeCodeToIdException Is thrown if the link type code is not mapped yet
      */
     protected function mapLinkTypeCodeToLinkTypeId($linkTypeCode)
     {

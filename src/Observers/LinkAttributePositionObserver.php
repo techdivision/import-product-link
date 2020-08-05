@@ -86,34 +86,21 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // initialize the attribute code
-        $attributeCode = LinkAttributePositionObserver::ATTRIBUTE_CODE;
-
-        try {
-            // extract the link type code from the row
-            $linkTypeId = $this->mapLinkTypeCodeToLinkTypeId($this->getValue(ColumnKeys::LINK_TYPE_CODE));
-        } catch (\Exception $e) {
-            // query whether or not, debug mode is enabled
-            if ($this->isDebugMode()) {
-                // log a warning and return immediately
-                $this->getSystemLogger()->warning($e->getMessage());
-                return;
-            }
-
-            // if we're NOT in debug mode, re-throw the exception
-            throw $e;
-        }
+        // process the link type attributes
+        $productLinkAttribute = $this->getProductLinkAttributeByLinkTypeCodeAndAttributeCode($this->getValue(ColumnKeys::LINK_TYPE_CODE), $this->getValue(ColumnKeys::LINK_TYPE_ATTRIBUTE_CODE));
 
         // try to load the product link attribute
-        if ($productLinkAttribute = $this->getProductLinkAttribute($linkTypeId, $attributeCode)) {
-            $this->setProductLinkAttributeId($productLinkAttribute[MemberNames::PRODUCT_LINK_ATTRIBUTE_ID]);
-        } else {
-            return;
-        }
+        $this->setProductLinkAttributeId($productLinkAttribute[MemberNames::PRODUCT_LINK_ATTRIBUTE_ID]);
+
+        // load the link attribute data type
+        $dataType = $productLinkAttribute[MemberNames::DATA_TYPE];
+
+        // concatenate the initialize/persist method names
+        $intializeMethod = sprintf('initializeProductLinkAttribute%s', $dataType);
+        $persistMethod = sprintf('persistProductLinkAttribute%s', $dataType);
 
         // prepare, initialize and persist the product link attribute int entity
-        $productLink = $this->initializeProductLinkAttributeInt($this->prepareAttributes());
-        $this->persistProductLinkAttributeInt($productLink);
+        $this->$persistMethod($this->$intializeMethod($this->prepareAttributes()));
     }
 
     /**
@@ -131,7 +118,7 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
         $productLinkAttributeId = $this->getProductLinkAttributeId();
 
         // load the position value
-        $value = $this->getValue(ColumnKeys::LINK_POSITION);
+        $value = $this->getValue(ColumnKeys::LINK_TYPE_ATTRIBUTE_VALUE);
 
         // initialize and return the entity
         return $this->initializeEntity(
@@ -166,16 +153,16 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
     }
 
     /**
-     * Return's the link attribute for the passed link type ID and attribute code.
+     * Return's the link attribute for the passed link type and attribute code.
      *
-     * @param integer $linkTypeId    The link type
-     * @param string  $attributeCode The attribute code
+     * @param string $linkTypeCode  The link type code
+     * @param string $attributeCode The attribute code
      *
      * @return array The link attribute
      */
-    protected function getProductLinkAttribute($linkTypeId, $attributeCode)
+    protected function getProductLinkAttributeByLinkTypeCodeAndAttributeCode($linkTypeCode, $attributeCode)
     {
-        return $this->getSubject()->getProductLinkAttribute($linkTypeId, $attributeCode);
+        return $this->getSubject()->getProductLinkAttributeByLinkTypeCodeAndAttributeCode($linkTypeCode, $attributeCode);
     }
 
     /**
@@ -186,6 +173,30 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
      * @return array The initialized product link attribute
      */
     protected function initializeProductLinkAttributeInt(array $attr)
+    {
+        return $attr;
+    }
+
+    /**
+     * Initialize the product link attribute with the passed attributes and returns an instance.
+     *
+     * @param array $attr The product link attribute
+     *
+     * @return array The initialized product link attribute
+     */
+    protected function initializeProductLinkAttributeDecimal(array $attr)
+    {
+        return $attr;
+    }
+
+    /**
+     * Initialize the product link attribute with the passed attributes and returns an instance.
+     *
+     * @param array $attr The product link attribute
+     *
+     * @return array The initialized product link attribute
+     */
+    protected function initializeProductLinkAttributeVarchar(array $attr)
     {
         return $attr;
     }
@@ -214,14 +225,38 @@ class LinkAttributePositionObserver extends AbstractProductImportObserver
     }
 
     /**
-     * Persist's the passed product link attribute int data and return's the ID.
+     * Persists the passed product link attribute int data and return's the ID.
      *
      * @param array $productLinkAttributeInt The product link attribute int data to persist
      *
-     * @return string The ID of the persisted entity
+     * @return void
      */
     protected function persistProductLinkAttributeInt($productLinkAttributeInt)
     {
         $this->getProductLinkProcessor()->persistProductLinkAttributeInt($productLinkAttributeInt);
+    }
+
+    /**
+     * Persists the passed product link attribute decimal data and return's the ID.
+     *
+     * @param array $productLinkAttributeDecimal The product link attribute decimal data to persist
+     *
+     * @return void
+     */
+    protected function persistProductLinkAttributeDecimal($productLinkAttributeDecimal)
+    {
+        $this->getProductLinkProcessor()->persistProductLinkAttributeDecimal($productLinkAttributeDecimal);
+    }
+
+    /**
+     * Persists the passed product link attribute varchar data and return's the ID.
+     *
+     * @param array $productLinkAttributeVarchar The product link attribute varchar data to persist
+     *
+     * @return void
+     */
+    protected function persistProductLinkAttributeVarchar($productLinkAttributeVarchar)
+    {
+        $this->getProductLinkProcessor()->persistProductLinkAttributeVarchar($productLinkAttributeVarchar);
     }
 }

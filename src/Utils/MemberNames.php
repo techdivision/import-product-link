@@ -47,13 +47,6 @@ class MemberNames extends \TechDivision\Import\Product\Utils\MemberNames
     const LINKED_PRODUCT_ID = 'linked_product_id';
 
     /**
-     * Name for the member 'link_type_id'.
-     *
-     * @var string
-     */
-    const LINK_TYPE_ID = 'link_type_id';
-
-    /**
      * Name for the member 'product_link_attribute_id'.
      *
      * @var string
@@ -61,16 +54,16 @@ class MemberNames extends \TechDivision\Import\Product\Utils\MemberNames
     const PRODUCT_LINK_ATTRIBUTE_ID = 'product_link_attribute_id';
 
     /**
-     * Name for the member 'product_link_attribute_code'.
-     *
-     * @var string
-     */
-    const PRODUCT_LINK_ATTRIBUTE_CODE = 'product_link_attribute_code';
-
-    /**
      * Name for the member 'value'.
      *
      * @var string
      */
     const VALUE = 'value';
+
+    /**
+     * Name for the member 'data_type'.
+     *
+     * @var string
+     */
+    const DATA_TYPE = 'data_type';
 }
