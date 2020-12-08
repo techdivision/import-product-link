@@ -50,8 +50,8 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
      * Initialize the observer with the passed product link processor instance.
      *
      * @param \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface $productLinkProcessor The
-     *     product link processor instance
-     * @param StateDetectorInterface|null $stateDetector The state detector instance to use
+     *                                                                                                       product link processor instance
+     * @param StateDetectorInterface|null                                              $stateDetector        The state detector instance to use
      */
     public function __construct(
         ProductLinkProcessorInterface $productLinkProcessor,
@@ -89,7 +89,6 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
         if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_LINKS)
             && $this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_LINKS)
         ) {
-
             // load the row/entity ID of the parent product
             $parentId = $this->getLastPrimaryKey();
 
@@ -98,7 +97,6 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
 
             // prepare the links for the found link types and clean up
             foreach ($linkTypes as $linkTypeCode => $columns) {
-
                 // shift the column with the header information from the stack
                 list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
 
@@ -114,8 +112,9 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
     /**
      * Delete not exists import links from database.
      *
-     * @param int $parentProductId The ID of the parent product
-     * @param array $childData The array of variants
+     * @param int    $parentProductId The ID of the parent product
+     * @param string $linkTypeCode    The link type code to prepare the artefacts for
+     * @param array  $childData       The array of variants
      *
      * @return void
      */
