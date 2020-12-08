@@ -37,6 +37,10 @@
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
+        <service id="import_product_link.action.processor.product.link.delete" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkDeleteProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_link.repository.sql.statement"/>
+        </service>
         <service id="import_product_link.action.processor.product.link.attribute.int.create" class="TechDivision\Import\Product\Link\Actions\Processors\ProductLinkAttributeIntCreateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_link.repository.sql.statement"/>
@@ -65,7 +69,7 @@
         <service id="import_product_link.action.product.link" class="TechDivision\Import\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_link.action.processor.product.link.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.update"/>
-            <argument type="service" id="import_product_link.action.processor.product.link.delete" on-invalid="ignore"/>
+            <argument type="service" id="import_product_link.action.processor.product.link.delete"/>
             <argument type="constant">TechDivision\Import\Product\Link\Utils\MemberNames::LINK_ID</argument>
         </service>
         <service id="import_product_link.action.product.link.attribute.int" class="TechDivision\Import\Actions\GenericAction">
@@ -107,7 +111,9 @@
             <argument type="service" id="import_product.processor.product.bunch"/>
             <argument type="string">%import_product_link.param.sku.column.name%</argument>
         </service>
-
+        <service id="import_product_link.observer.clean.up.product.link" class="TechDivision\Import\Product\Link\Observers\CleanUpLinkObserver">
+            <argument type="service" id="import_product_link.processor.product.link"/>
+        </service>
         <!--
          | The DI configuration for the composite observers of the replace operation.
          |-->

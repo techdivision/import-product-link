@@ -141,6 +141,16 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
     public function persistProductLink($productLink);
 
     /**
+     * Deletes the passed product link data and return's the ID.
+     *
+     * @param array       $row  The product link to be deleted
+     * @param string|null $name The name of the prepared statement that has to be executed
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function deleteProductLink(array $row, $name = null);
+
+    /**
      * Persist's the passed product link attribute integer data.
      *
      * @param array $productLinkAttributeInt The product link attribute integer data to persist
