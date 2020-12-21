@@ -85,28 +85,56 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // query whether or not the product links has to be cleaned up
-        if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_LINKS)
-            && $this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_LINKS)
-        ) {
-            // load the row/entity ID of the parent product
-            $parentId = $this->getLastPrimaryKey();
+        // load the row/entity ID of the parent product
+        $parentId = $this->getLastPrimaryKey();
 
-            // load the link type mappings
-            $linkTypes = $this->getSubject()->getLinkTypeMappings();
+        // load the link type mappings
+        $linkTypes = $this->getSubject()->getLinkTypeMappings();
 
-            // prepare the links for the found link types and clean up
-            foreach ($linkTypes as $linkTypeCode => $columns) {
-                // shift the column with the header information from the stack
-                list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
+        // prepare the links for the found link types and clean up
+        foreach ($linkTypes as $linkTypeCode => $columns) {
+            // shift the column with the header information from the stack
+            list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
+            // query whether or not, we've up sell, cross sell or relation products
+            $links = $this->getValue($columnNameChildSkus, array(), $callbackChildSkus);
 
-                // query whether or not, we've up sell, cross sell or relation products
-                $links = $this->getValue($columnNameChildSkus, [], $callbackChildSkus);
-
-                // Start clean up
+            // query whether or not the product links has to be cleaned up
+            if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_LINKS) &&
+                $this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_LINKS)
+            ) {
+                // start the clean-up process
                 $this->cleanUpLinks($parentId, $linkTypeCode, $links);
+
+            } else {
+                // this handles the case with the `__EMPTY__VALUE__` constant
+                // when the directive `clean-up-links` has been deactivated
+                if ($this->hasColumn($columnNameChildSkus) && sizeof($links) === 0) {
+                    $this->cleanUpLinks($parentId, $linkTypeCode, $links);
+                }
             }
         }
+    }
+
+    /**
+     * This method queries whether or not  the column with the passed name is available or
+     * not. This  method uses the `isset()` function to make sure the column is available
+     * and has not been removed somehow before, because it has an empty value for example.
+     *
+     * @param string $name
+     *
+     * @return boolean TRUE if the columen is available, FALSE otherwise
+     */
+    protected function hasColumn(string $name) : bool
+    {
+
+        // query whether or not the header is available, if yes try
+        // to load the key and query whether the column is available
+        if ($this->hasHeader($name)) {
+            return isset($this->row[$this->getHeader($name)]);
+        }
+
+        // return FALSE if not
+        return false;
     }
 
     /**
@@ -120,10 +148,6 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
      */
     protected function cleanUpLinks($parentProductId, $linkTypeCode, array $childData)
     {
-        // we maybe don't want delete everything
-        if (empty($childData)) {
-            return;
-        }
 
         // load the SKU of the parent product
         $parentSku = $this->getValue(ColumnKeys::SKU);
@@ -135,8 +159,8 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
         $this->getProductLinkProcessor()
             ->deleteProductLink(
                 array(
-                    MemberNames::PRODUCT_ID => $parentProductId,
-                    MemberNames::SKU => $childData,
+                    MemberNames::PRODUCT_ID   => $parentProductId,
+                    MemberNames::SKU          => $childData,
                     MemberNames::LINK_TYPE_ID => $linkTypeId,
                 )
             );

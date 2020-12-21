@@ -20,8 +20,9 @@
 
 namespace TechDivision\Import\Product\Link\Observers;
 
+use TechDivision\Import\Subjects\SubjectInterface;
+use TechDivision\Import\Observers\ObserverFactoryInterface;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
-use TechDivision\Import\Product\Link\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
@@ -100,11 +101,6 @@ class ProductLinkObserver extends AbstractProductImportObserver
 
                 // load the SKUs of the related products
                 foreach ($links as $key => $childSku) {
-                    // ignore SKU as a definition from an empty value
-                    if ($childSku === ConfigurationKeys::REMOVE_RELATION) {
-                        continue;
-                    }
-
                     // prepare the link type attribute value
                     $linkTypeAttributeValue = $key + 1;
                     if (isset($linkAttributeValues[$key]) && $linkAttributeValues[$key] !== null && $linkAttributeValues[$key] !== '') {
