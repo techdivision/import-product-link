@@ -120,7 +120,6 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
      */
     protected function process()
     {
-
         // load the row/entity ID of the parent product
         $parentId = $this->getLastPrimaryKey();
 
@@ -129,25 +128,18 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
             // shift the column with the header information from the stack
             list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
 
+            // query whether or not, we've up sell, cross sell or relation products
+            $links = $this->getValue($columnNameChildSkus, [], $callbackChildSkus);
+
             // start the clean-up process, if the appropriate flag has been
             // activated, otherwise we've to figure out if the column value
-            // contains the `__EMPTY__VALUE__` constant
-            if ($this->cleanUpLinks === true) {
-                // query whether or not, we've up sell, cross sell or relation products
-                $links = $this->getValue($columnNameChildSkus, array(), $callbackChildSkus);
+            // contains the `__EMPTY__VALUE__` constant. In that case,
+            // the clean-up columns functionality in the
+            // AttributeObserverTrait::clearRow() method has NOT unset the
+            // column which indicates the column has to be cleaned-up.
+            if ($this->cleanUpLinks === true || ($this->hasColumn($columnNameChildSkus) && sizeof($links) === 0)) {
                 // clean-up the links in the database
                 $this->doCleanUp($parentId, $linkTypeCode, $links);
-            } else {
-                // query whether or not, we've up sell, cross sell or relation products
-                $links = $this->getValue($columnNameChildSkus, array(), $callbackChildSkus);
-                // This handles the case with the `__EMPTY__VALUE__` constant
-                // when the directive `clean-up-links` has been deactivated.
-                // In that case, the clean-up columns functionality in the
-                // AttributeObserverTrait::clearRow() method has NOT unset the
-                // column which indicates the column has to be cleaned-up.
-                if ($this->hasColumn($columnNameChildSkus) && sizeof($links) === 0) {
-                    $this->doCleanUp($parentId, $linkTypeCode, $links);
-                }
             }
         }
     }
