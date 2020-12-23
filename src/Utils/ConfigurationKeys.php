@@ -31,18 +31,4 @@ namespace TechDivision\Import\Product\Link\Utils;
  */
 class ConfigurationKeys extends \TechDivision\Import\Product\Utils\ConfigurationKeys
 {
-
-    /**
-     * Name for the configuration key 'clean-up-variants'.
-     *
-     * @var string
-     */
-    const CLEAN_UP_LINKS = 'clean-up-links';
-
-    /**
-     * Child SKU to remove complete link relation.
-     *
-     * @var string
-     */
-    const REMOVE_RELATION = '__REMOVE__RELATION__';
 }
