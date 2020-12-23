@@ -20,15 +20,17 @@
 
 namespace TechDivision\Import\Product\Link\Observers;
 
+use TechDivision\Import\Subjects\SubjectInterface;
 use TechDivision\Import\Observers\StateDetectorInterface;
-use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
-use TechDivision\Import\Product\Link\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
+use TechDivision\Import\Product\Link\Utils\ConfigurationKeys;
+use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Observers\ObserverFactoryInterface;
 
 /**
- * Observer that cleaned up a product's link information.
+ * Observer that cleans-up product link relation information.
  *
  * @author    Martin Eisenführer <m.eisenfuehrer@techdivision.com>
  * @copyright 2020 TechDivision GmbH <info@techdivision.com>
@@ -36,7 +38,7 @@ use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
  * @link      https://github.com/techdivision/import-product-variant
  * @link      http://www.techdivision.com
  */
-class CleanUpLinkObserver extends AbstractProductImportObserver
+class CleanUpLinkObserver extends AbstractProductImportObserver implements ObserverFactoryInterface
 {
 
     /**
@@ -45,6 +47,20 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
      * @var \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface
      */
     protected $productLinkProcessor;
+
+    /**
+     * The array with the link types.
+     *
+     * @var array
+     */
+    protected $linkTypes = array();
+
+    /**
+     * The flag to query whether or not the link types has to be cleaned-up.
+     *
+     * @var boolean
+     */
+    protected $cleanUpLinks = false;
 
     /**
      * Initialize the observer with the passed product link processor instance.
@@ -66,6 +82,27 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
     }
 
     /**
+     * Will be invoked by the observer visitor when a factory has been defined to create the observer instance.
+     *
+     * @param \TechDivision\Import\Subjects\SubjectInterface $subject The subject instance
+     *
+     * @return \TechDivision\Import\Observers\ObserverInterface The observer instance
+     */
+    public function createObserver(SubjectInterface $subject)
+    {
+
+        // load the link type mappings
+        $this->linkTypes = $subject->getLinkTypeMappings();
+
+        // query whether or not the product links has to be cleaned-up
+        $this->cleanUpLinks = $subject->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_LINKS) &&
+                              $subject->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_LINKS, false);
+
+        // return the initialized instance
+        return $this;
+    }
+
+    /**
      * Return's the product variant processor instance.
      *
      * @return \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface The product variant processor
@@ -80,7 +117,6 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
      * Process the observer's business logic.
      *
      * @return void
-     * @throws \Exception
      */
     protected function process()
     {
@@ -88,28 +124,29 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
         // load the row/entity ID of the parent product
         $parentId = $this->getLastPrimaryKey();
 
-        // load the link type mappings
-        $linkTypes = $this->getSubject()->getLinkTypeMappings();
-
-        // prepare the links for the found link types and clean up
-        foreach ($linkTypes as $linkTypeCode => $columns) {
+        // prepare the links for the found link types and clean-up
+        foreach ($this->linkTypes as $linkTypeCode => $columns) {
             // shift the column with the header information from the stack
             list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
-            // query whether or not, we've up sell, cross sell or relation products
-            $links = $this->getValue($columnNameChildSkus, array(), $callbackChildSkus);
 
-            // query whether or not the product links has to be cleaned up
-            if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_LINKS) &&
-                $this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_LINKS)
-            ) {
-                // start the clean-up process
-                $this->cleanUpLinks($parentId, $linkTypeCode, $links);
-
+            // start the clean-up process, if the appropriate flag has been
+            // activated, otherwise we've to figure out if the column value
+            // contains the `__EMPTY__VALUE__` constant
+            if ($this->cleanUpLinks === true) {
+                // query whether or not, we've up sell, cross sell or relation products
+                $links = $this->getValue($columnNameChildSkus, array(), $callbackChildSkus);
+                // clean-up the links in the database
+                $this->doCleanUp($parentId, $linkTypeCode, $links);
             } else {
-                // this handles the case with the `__EMPTY__VALUE__` constant
-                // when the directive `clean-up-links` has been deactivated
+                // query whether or not, we've up sell, cross sell or relation products
+                $links = $this->getValue($columnNameChildSkus, array(), $callbackChildSkus);
+                // This handles the case with the `__EMPTY__VALUE__` constant
+                // when the directive `clean-up-links` has been deactivated.
+                // In that case, the clean-up columns functionality in the
+                // AttributeObserverTrait::clearRow() method has NOT unset the
+                // column which indicates the column has to be cleaned-up.
                 if ($this->hasColumn($columnNameChildSkus) && sizeof($links) === 0) {
-                    $this->cleanUpLinks($parentId, $linkTypeCode, $links);
+                    $this->doCleanUp($parentId, $linkTypeCode, $links);
                 }
             }
         }
@@ -120,7 +157,7 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
      * not. This  method uses the `isset()` function to make sure the column is available
      * and has not been removed somehow before, because it has an empty value for example.
      *
-     * @param string $name
+     * @param string $name The name of the column to query for
      *
      * @return boolean TRUE if the columen is available, FALSE otherwise
      */
@@ -146,7 +183,7 @@ class CleanUpLinkObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    protected function cleanUpLinks($parentProductId, $linkTypeCode, array $childData)
+    protected function doCleanUp($parentProductId, $linkTypeCode, array $childData)
     {
 
         // load the SKU of the parent product
