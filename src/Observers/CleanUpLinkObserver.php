@@ -22,12 +22,12 @@ namespace TechDivision\Import\Product\Link\Observers;
 
 use TechDivision\Import\Subjects\SubjectInterface;
 use TechDivision\Import\Observers\StateDetectorInterface;
+use TechDivision\Import\Observers\ObserverFactoryInterface;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Link\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
-use TechDivision\Import\Observers\ObserverFactoryInterface;
 
 /**
  * Observer that cleans-up product link relation information.
@@ -150,28 +150,6 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
                 }
             }
         }
-    }
-
-    /**
-     * This method queries whether or not  the column with the passed name is available or
-     * not. This  method uses the `isset()` function to make sure the column is available
-     * and has not been removed somehow before, because it has an empty value for example.
-     *
-     * @param string $name The name of the column to query for
-     *
-     * @return boolean TRUE if the columen is available, FALSE otherwise
-     */
-    protected function hasColumn(string $name) : bool
-    {
-
-        // query whether or not the header is available, if yes try
-        // to load the key and query whether the column is available
-        if ($this->hasHeader($name)) {
-            return isset($this->row[$this->getHeader($name)]);
-        }
-
-        // return FALSE if not
-        return false;
     }
 
     /**
