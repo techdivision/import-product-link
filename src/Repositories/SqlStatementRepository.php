@@ -120,7 +120,14 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
                 SET product_link_attribute_id = :product_link_attribute_id,
                     link_id = :link_id,
                     value = :value
-              WHERE value_id = :value_id'
+              WHERE value_id = :value_id',
+        SqlStatementKeys::DELETE_PRODUCT_LINK =>
+            'DELETE
+               FROM ${table:catalog_product_link}
+              WHERE product_id = :product_id
+                AND link_type_id = :link_type_id
+                AND linked_product_id
+             NOT IN (SELECT entity_id FROM catalog_product_entity WHERE sku IN (:skus))',
     );
 
     /**

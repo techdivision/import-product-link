@@ -75,6 +75,13 @@ class SqlStatementKeys extends \TechDivision\Import\Product\Utils\SqlStatementKe
     const UPDATE_PRODUCT_LINK = 'update.product_link';
 
     /**
+     * The SQL statement to update an existing product link attribute varchar value.
+     *
+     * @var string
+     */
+    const DELETE_PRODUCT_LINK = 'delete.product_link';
+
+    /**
      * The SQL statement to create a new product link attribute integer value.
      *
      * @var string

@@ -20,6 +20,8 @@
 
 namespace TechDivision\Import\Product\Link\Observers;
 
+use TechDivision\Import\Subjects\SubjectInterface;
+use TechDivision\Import\Observers\ObserverFactoryInterface;
 use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
