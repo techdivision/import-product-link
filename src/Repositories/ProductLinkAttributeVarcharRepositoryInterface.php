@@ -20,7 +20,7 @@
 
 namespace TechDivision\Import\Product\Link\Repositories;
 
-use TechDivision\Import\Repositories\RepositoryInterface;
+use TechDivision\Import\Dbal\Repositories\RepositoryInterface;
 
 /**
  * Interface for repository implementations to load product link attribute varchar data.
