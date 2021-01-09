@@ -66,21 +66,21 @@
             <argument type="service" id="import_product_link.repository.sql.statement"/>
         </service>
 
-        <service id="import_product_link.action.product.link" class="TechDivision\Import\Dbal\Actions\GenericIdentifierAction">
+        <service id="import_product_link.action.product.link" class="TechDivision\Import\Dbal\Collection\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_link.action.processor.product.link.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.update"/>
             <argument type="service" id="import_product_link.action.processor.product.link.delete"/>
             <argument type="constant">TechDivision\Import\Product\Link\Utils\MemberNames::LINK_ID</argument>
         </service>
-        <service id="import_product_link.action.product.link.attribute.int" class="TechDivision\Import\Dbal\Actions\GenericAction">
+        <service id="import_product_link.action.product.link.attribute.int" class="TechDivision\Import\Dbal\Collection\Actions\GenericAction">
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.int.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.int.update"/>
         </service>
-        <service id="import_product_link.action.product.link.attribute.decimal" class="TechDivision\Import\Dbal\Actions\GenericAction">
+        <service id="import_product_link.action.product.link.attribute.decimal" class="TechDivision\Import\Dbal\Collection\Actions\GenericAction">
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.decimal.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.decimal.update"/>
         </service>
-        <service id="import_product_link.action.product.link.attribute.varchar" class="TechDivision\Import\Dbal\Actions\GenericAction">
+        <service id="import_product_link.action.product.link.attribute.varchar" class="TechDivision\Import\Dbal\Collection\Actions\GenericAction">
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.varchar.create"/>
             <argument type="service" id="import_product_link.action.processor.product.link.attribute.varchar.update"/>
         </service>
