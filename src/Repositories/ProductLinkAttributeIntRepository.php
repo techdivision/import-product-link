@@ -22,7 +22,7 @@ namespace TechDivision\Import\Product\Link\Repositories;
 
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Link\Utils\SqlStatementKeys;
-use TechDivision\Import\Repositories\AbstractRepository;
+use TechDivision\Import\Dbal\Collection\Repositories\AbstractRepository;
 
 /**
  * Repository implementation to load product link attribute integer data.

@@ -65,28 +65,28 @@ interface ProductLinkProcessorInterface extends ProductProcessorInterface
     /**
      * Return's the action with the product link CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product link CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product link CRUD methods
      */
     public function getProductLinkAction();
 
     /**
      * Return's the action with the product link attribute integer CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product link attribute integer CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product link attribute integer CRUD methods
      */
     public function getProductLinkAttributeIntAction();
 
     /**
      * Return's the action with the product link attribute decimal CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product link attribute decimal CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product link attribute decimal CRUD methods
      */
     public function getProductLinkAttributeDecimalAction();
 
     /**
      * Return's the action with the product link attribute varchar CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product link attribute varchar CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product link attribute varchar CRUD methods
      */
     public function getProductLinkAttributeVarcharAction();
 
