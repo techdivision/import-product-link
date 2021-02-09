@@ -21,8 +21,8 @@
 namespace TechDivision\Import\Product\Link\Actions\Processors;
 
 use TechDivision\Import\Product\Link\Utils\MemberNames;
-use TechDivision\Import\Actions\Processors\AbstractDeleteProcessor;
 use TechDivision\Import\Product\Link\Utils\SqlStatementKeys;
+use TechDivision\Import\Dbal\Collection\Actions\Processors\AbstractBaseProcessor;
 
 /**
  * The product link delete processor implementation.
@@ -33,7 +33,7 @@ use TechDivision\Import\Product\Link\Utils\SqlStatementKeys;
  * @link      https://github.com/techdivision/import-product-variant
  * @link      http://www.techdivision.com
  */
-class ProductLinkDeleteProcessor extends AbstractDeleteProcessor
+class ProductLinkDeleteProcessor extends AbstractBaseProcessor
 {
 
     /**
