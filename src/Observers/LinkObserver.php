@@ -109,7 +109,6 @@ class LinkObserver extends AbstractProductImportObserver
                 // if we're NOT in debug mode and strict mode on, re-throw the exception
                 throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
             }
-
         }
 
         // initialize and return the entity
@@ -247,5 +246,4 @@ class LinkObserver extends AbstractProductImportObserver
     {
         return $this->getSubject()->isStrictMode();
     }
-
 }
