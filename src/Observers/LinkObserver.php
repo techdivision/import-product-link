@@ -105,11 +105,11 @@ class LinkObserver extends AbstractProductImportObserver
                 $this->skipRow();
                 // log a warning and return immediately
                 $this->getSystemLogger()->warning($e->getMessage());
-                return;
+            } elseif ($this->isStrictMode()) {
+                // if we're NOT in debug mode and strict mode on, re-throw the exception
+                throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
             }
 
-            // if we're NOT in debug mode, re-throw the exception
-            throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
         }
 
         // initialize and return the entity
@@ -232,4 +232,20 @@ class LinkObserver extends AbstractProductImportObserver
     {
         return $this->getSubject()->isDebugMode();
     }
+    
+    /**
+     * Queries whether or not strict mode is enabled or not, default is True.
+     * Backward compatibility
+     * debug = true strict = true -> isStrict == FALSE
+     * debug = true strict = false -> isStrict == FALSE
+     * debug = false strict = true -> isStrict == TRUE
+     * debug = false strict = false -> isStrict == FALSE
+     *
+     * @return boolean TRUE if strict mode is enabled and debug mode disable, else FALSE
+     */
+    public function isStrictMode()
+    {
+        return $this->getSubject()->isStrictMode();
+    }
+
 }
