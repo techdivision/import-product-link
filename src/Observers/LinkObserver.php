@@ -18,6 +18,7 @@ use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
+use TechDivision\Import\Utils\RegistryKeys;
 
 /**
  * Oberserver that provides functionality for the product link replace operation.
@@ -94,15 +95,25 @@ class LinkObserver extends AbstractProductImportObserver
             $childId = $this->mapSkuToEntityId($this->getValue($columnName = ColumnKeys::LINK_CHILD_SKU));
         } catch (\Exception $e) {
             // query whether or not, debug mode is enabled
-            if ($this->isDebugMode()) {
+            if (!$this->isStrictMode()) {
                 // stop processing the row
                 $this->skipRow();
                 // log a warning and return immediately
                 $this->getSystemLogger()->warning($e->getMessage());
-            } elseif ($this->isStrictMode()) {
-                // if we're NOT in debug mode and strict mode on, re-throw the exception
-                throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
+                $this->mergeStatus(
+                    array(
+                        RegistryKeys::NO_STRICT_VALIDATIONS => array(
+                            basename($this->getFilename()) => array(
+                                $this->getLineNumber() => array($columnName =>  $e->getMessage()
+                                )
+                            )
+                        )
+                    )
+                );
+                return;
             }
+            // if we're NOT in debug mode, re-throw the exception
+            throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
         }
 
         // initialize and return the entity
