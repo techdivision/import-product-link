@@ -110,7 +110,7 @@ class LinkObserver extends AbstractProductImportObserver
                         )
                     )
                 );
-                return;
+                return [];
             }
             // if we're NOT in debug mode, re-throw the exception
             throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
