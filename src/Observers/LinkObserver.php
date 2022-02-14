@@ -18,6 +18,7 @@ use TechDivision\Import\Product\Link\Utils\ColumnKeys;
 use TechDivision\Import\Product\Link\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface;
+use TechDivision\Import\Utils\RegistryKeys;
 
 /**
  * Oberserver that provides functionality for the product link replace operation.
@@ -94,14 +95,23 @@ class LinkObserver extends AbstractProductImportObserver
             $childId = $this->mapSkuToEntityId($this->getValue($columnName = ColumnKeys::LINK_CHILD_SKU));
         } catch (\Exception $e) {
             // query whether or not, debug mode is enabled
-            if ($this->isDebugMode()) {
+            if (!$this->isStrictMode()) {
                 // stop processing the row
                 $this->skipRow();
                 // log a warning and return immediately
                 $this->getSystemLogger()->warning($e->getMessage());
-                return;
+                $this->mergeStatus(
+                    array(
+                        RegistryKeys::NO_STRICT_VALIDATIONS => array(
+                            basename($this->getFilename()) => array(
+                                $this->getLineNumber() => array($columnName =>  $e->getMessage()
+                                )
+                            )
+                        )
+                    )
+                );
+                return [];
             }
-
             // if we're NOT in debug mode, re-throw the exception
             throw $columnName ? $this->wrapException(array($columnName), $e) : $e;
         }
@@ -225,5 +235,20 @@ class LinkObserver extends AbstractProductImportObserver
     protected function isDebugMode()
     {
         return $this->getSubject()->isDebugMode();
+    }
+    
+    /**
+     * Queries whether or not strict mode is enabled or not, default is True.
+     * Backward compatibility
+     * debug = true strict = true -> isStrict == FALSE
+     * debug = true strict = false -> isStrict == FALSE
+     * debug = false strict = true -> isStrict == TRUE
+     * debug = false strict = false -> isStrict == FALSE
+     *
+     * @return boolean TRUE if strict mode is enabled and debug mode disable, else FALSE
+     */
+    public function isStrictMode()
+    {
+        return $this->getSubject()->isStrictMode();
     }
 }
