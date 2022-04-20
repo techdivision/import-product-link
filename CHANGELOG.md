@@ -1,3 +1,12 @@
+# Version 25.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+* PAC-541: Update composer with php Version ">=^7.3"
+
 # Version 24.0.0
 
 ## Bugfixes
