@@ -131,7 +131,7 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
             // the clean-up columns functionality in the
             // AttributeObserverTrait::clearRow() method has NOT unset the
             // column which indicates the column has to be cleaned-up.
-            if ($this->cleanUpLinks === true || ($this->hasColumn($columnNameChildSkus) && sizeof($links) === 0)) {
+            if ($this->cleanUpLinks === true || ($this->hasColumn($columnNameChildSkus))) {
                 // clean-up the links in the database
                 $this->doCleanUp($parentId, $linkTypeCode, $links);
             }

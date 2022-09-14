@@ -1,3 +1,12 @@
+# Version 25.0.1
+
+## Bugfixes
+
+* Run Cleanup also on changes
+
+## Features
+* None
+
 # Version 25.0.0
 
 ## Bugfixes
