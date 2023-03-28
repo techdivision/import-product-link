@@ -121,7 +121,7 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
               WHERE product_id = :product_id
                 AND link_type_id = :link_type_id
                 AND linked_product_id
-             NOT IN (SELECT entity_id FROM catalog_product_entity WHERE sku IN (:skus))',
+             NOT IN (SELECT entity_id FROM ${catalog_product_entity} WHERE sku IN (:skus))',
     );
 
     /**
