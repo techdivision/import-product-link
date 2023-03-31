@@ -1,3 +1,13 @@
+# Version 25.0.2
+
+## Bugfixes
+
+* Fix dynamic table name for tables with table prefix
+
+## Features
+
+* none
+
 # Version 25.0.1
 
 ## Bugfixes
