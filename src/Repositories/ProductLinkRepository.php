@@ -35,7 +35,7 @@ class ProductLinkRepository extends AbstractRepository implements ProductLinkRep
      *
      * @var \PDOStatement
      */
-    protected $linkStmt;
+    protected $productLinkStmt;
 
     /**
      * Initializes the repository's prepared statements.
