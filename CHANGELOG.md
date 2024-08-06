@@ -1,3 +1,9 @@
+# Version 25.0.4
+
+## Bugfixes
+
+*  fix php warnings
+
 # Version 25.0.3
 
 ## Bugfixes
