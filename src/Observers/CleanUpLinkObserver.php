@@ -117,6 +117,9 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
         // load the row/entity ID of the parent product
         $parentId = $this->getLastPrimaryKey();
 
+        // remove all the empty values from the row
+        $row = $this->clearRow();
+        $this->setRow($row);
         // prepare the links for the found link types and clean-up
         foreach ($this->linkTypes as $linkTypeCode => $columns) {
             // shift the column with the header information from the stack
@@ -131,11 +134,13 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
             // the clean-up columns functionality in the
             // AttributeObserverTrait::clearRow() method has NOT unset the
             // column which indicates the column has to be cleaned-up.
-            if ($this->cleanUpLinks === true || ($this->hasColumn($columnNameChildSkus))) {
+            if ($this->cleanUpLinks === true || ($this->hasColumn($columnNameChildSkus) && $this->getValue($columnNameChildSkus) === null)) {
                 // clean-up the links in the database
                 $this->doCleanUp($parentId, $linkTypeCode, $links);
             }
         }
+        // set the origin row again
+        $this->setRow($this->getSubject()->getRow());
     }
 
     /**

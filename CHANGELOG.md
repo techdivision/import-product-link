@@ -1,3 +1,9 @@
+# Version 26.0.2
+
+## Bugfixes
+
+*  Fixing clean-up links if the data in the file is missing, the value is not set to \_\_EMPTY__VALUE__ and the clean-up links configuration is disabled
+
 # Version 26.0.1
 
 ## Bugfixes
