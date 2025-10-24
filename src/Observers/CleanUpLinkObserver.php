@@ -61,11 +61,11 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
      *
      * @param \TechDivision\Import\Product\Link\Services\ProductLinkProcessorInterface $productLinkProcessor The
      *                                                                                                       product link processor instance
-     * @param StateDetectorInterface|null                                              $stateDetector        The state detector instance to use
+     * @param StateDetectorInterface|null $stateDetector        The state detector instance to use
      */
     public function __construct(
         ProductLinkProcessorInterface $productLinkProcessor,
-        StateDetectorInterface $stateDetector = null
+        ?StateDetectorInterface $stateDetector = null
     ) {
 
         // pass the state detector to the parent constructor
@@ -123,7 +123,7 @@ class CleanUpLinkObserver extends AbstractProductImportObserver implements Obser
         // prepare the links for the found link types and clean-up
         foreach ($this->linkTypes as $linkTypeCode => $columns) {
             // shift the column with the header information from the stack
-            list ($columnNameChildSkus, $callbackChildSkus) = array_shift($columns);
+            [$columnNameChildSkus, $callbackChildSkus] = array_shift($columns);
 
             // query whether or not, we've up sell, cross sell or relation products
             $links = $this->getValue($columnNameChildSkus, [], $callbackChildSkus);
